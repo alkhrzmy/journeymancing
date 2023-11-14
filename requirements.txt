@@ -1,6 +1,2 @@
 
-sqlite3
-pandas
-
-datetime
 folium
