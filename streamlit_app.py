@@ -11,3 +11,4 @@ import pandas as pd
 # --------------------------------------------
 
 st.header('Kelompok 8 Tugas Besar Algoritma Pemrograman')
+st.text("1. Natasya Ega Lina Marbun   122450024")
