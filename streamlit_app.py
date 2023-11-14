@@ -1,40 +1,60 @@
 import streamlit as st
-import pandas as pd
+import sqlite3
+from datetime import datetime
 
-# Membuat DataFrame untuk menyimpan catatan memancing
-catatan_memancing = pd.DataFrame(columns=['Tanggal', 'Lokasi', 'Jenis Ikan', 'Cuaca', 'Peralatan', 'Catatan'])
+# Fungsi untuk membuat tabel catatan memancing jika belum ada
+def create_table():
+    conn = sqlite3.connect('fishing_notes.db')
+    c = conn.cursor()
+    c.execute('''
+              CREATE TABLE IF NOT EXISTS fishing_notes (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  tanggal DATE,
+                  lokasi TEXT,
+                  hasil TEXT
+              )
+              ''')
+    conn.commit()
+    conn.close()
 
-# Fungsi untuk menambahkan catatan memancing
-def tambah_catatan(tanggal, lokasi, jenis_ikan, cuaca, peralatan, catatan):
-    global catatan_memancing
-    catatan_memancing = catatan_memancing.append({
-        'Tanggal': tanggal,
-        'Lokasi': lokasi,
-        'Jenis Ikan': jenis_ikan,
-        'Cuaca': cuaca,
-        'Peralatan': peralatan,
-        'Catatan': catatan
-    }, ignore_index=True)
+# Fungsi untuk menambahkan catatan memancing ke database
+def add_fishing_note(tanggal, lokasi, hasil):
+    conn = sqlite3.connect('fishing_notes.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO fishing_notes (tanggal, lokasi, hasil) VALUES (?, ?, ?)', (tanggal, lokasi, hasil))
+    conn.commit()
+    conn.close()
 
-# Halaman utama
-def main():
-    st.title("Catatan Memancing")
+# Fungsi untuk menampilkan catatan memancing
+def show_fishing_notes():
+    conn = sqlite3.connect('fishing_notes.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM fishing_notes')
+    data = c.fetchall()
+    conn.close()
+    return data
 
-    # Sidebar untuk menambahkan catatan
-    st.sidebar.header("Tambah Catatan")
-    tanggal = st.sidebar.date_input("Tanggal", pd.to_datetime('today'))
-    lokasi = st.sidebar.text_input("Lokasi")
-    jenis_ikan = st.sidebar.text_input("Jenis Ikan")
-    cuaca = st.sidebar.text_input("Cuaca")
-    peralatan = st.sidebar.text_input("Peralatan")
-    catatan = st.sidebar.text_area("Catatan")
-    
-    if st.sidebar.button("Simpan Catatan"):
-        tambah_catatan(tanggal, lokasi, jenis_ikan, cuaca, peralatan, catatan)
+# Membuat tabel jika belum ada
+create_table()
 
-    # Menampilkan catatan yang telah disimpan
-    st.subheader("Catatan Memancing yang Telah Disimpan")
-    st.dataframe(catatan_memancing)
+# Judul halaman
+st.title('Catatan Memancing')
 
-if __name__ == "__main__":
-    main()
+# Formulir untuk menambahkan catatan memancing
+st.header('Tambah Catatan Memancing')
+tanggal = st.date_input('Tanggal')
+lokasi = st.text_input('Lokasi')
+hasil = st.text_area('Hasil Memancing')
+if st.button('Tambah Catatan'):
+    add_fishing_note(tanggal, lokasi, hasil)
+    st.success('Catatan berhasil ditambahkan!')
+
+# Menampilkan catatan memancing
+st.header('Catatan Memancing')
+catatan_memancing = show_fishing_notes()
+if catatan_memancing:
+    for catatan in catatan_memancing:
+        st.write(f"**Tanggal:** {catatan[1]}, **Lokasi:** {catatan[2]}, **Hasil:** {catatan[3]}")
+else:
+    st.warning('Belum ada catatan memancing.')
+
