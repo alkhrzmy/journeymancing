@@ -5,9 +5,6 @@ from datetime import datetime
 import folium
 
 # Fungsi login
-import streamlit as st
-
-# Fungsi untuk login
 def login(username, password):
     # Cek apakah username dan password sesuai
     if username == "user" and password == "pass":
@@ -16,7 +13,7 @@ def login(username, password):
         return False
 
 def main():
-    st.title("Aplikasi Login")
+    st.title("Login Data Mancing")
 
     # Form untuk input username dan password
     username = st.text_input("Username")
