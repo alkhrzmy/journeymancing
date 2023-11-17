@@ -5,25 +5,38 @@ from datetime import datetime
 import folium
 
 # Fungsi login
-def login():
-    st.title("Login Page")
+import streamlit as st
 
-    # Data pengguna (dapat diganti dengan database)
-    user_data = {
-        "username": "admin",
-        "password": "admin123"
-    }
+# Fungsi untuk login
+def login(username, password):
+    # Cek apakah username dan password sesuai
+    if username == "user" and password == "pass":
+        return True
+    else:
+        return False
 
+def main():
+    st.title("Aplikasi Login")
+
+    # Form untuk input username dan password
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
+    # Tombol untuk melakukan login
     if st.button("Login"):
-        if username == user_data['username'] and password == user_data['password']:
-            st.success("Login Berhasil!")
-            return True
+        if login(username, password):
+            st.success("Login berhasil!")
+
+            # Tampilkan tampilan setelah login berhasil
+            st.write("Ini tampilan setelah login berhasil.")
+            st.write("Tambahkan konten atau fitur yang diinginkan di sini setelah login.")
+
         else:
-            st.error("Username atau Password salah. Coba lagi.")
-    return False
+            st.error("Username atau password salah. Silakan coba lagi.")
+
+if __name__ == "__main__":
+    main()
+
     
 # Fungsi untuk membuat tabel catatan memancing jika belum ada
 def create_table():
