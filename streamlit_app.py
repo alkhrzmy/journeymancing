@@ -4,35 +4,41 @@ import pandas as pd
 from datetime import datetime
 import folium
 
-# Fungsi login
+import streamlit as st
+
 def login(username, password):
-    # Cek apakah username dan password sesuai
-    if username == "user" and password == "pass":
+    # Ganti ini dengan logika autentikasi yang sesuai
+    if username == "admin" and password == "pass":
         return True
     else:
         return False
 
 def main():
-    st.title("Login Data Mancing")
+    st.title("Aplikasi Login")
 
-    # Form untuk input username dan password
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    # State untuk menyimpan informasi login
+    logged_in = st.session_state.get('logged_in', False)
 
-    # Tombol untuk melakukan login
-    if st.button("Login"):
-        if login(username, password):
-            st.success("Login berhasil!")
+    if not logged_in:
+        st.subheader("Login")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
 
-            # Tampilkan tampilan setelah login berhasil
-            st.write("Ini tampilan setelah login berhasil.")
-            st.write("Tambahkan konten atau fitur yang diinginkan di sini setelah login.")
+        if st.button("Login"):
+            if login(username, password):
+                st.success("Login berhasil!")
+                st.session_state['logged_in'] = True
+            else:
+                st.error("Username atau password salah")
 
-        else:
-            st.error("Username atau password salah. Silakan coba lagi.")
+    else:
+        st.title("Halaman Setelah Login")
+        st.write("Anda telah berhasil login sebagai admin.")
+        # Tambahkan konten halaman setelah login di sini
 
 if __name__ == "__main__":
     main()
+
 
     
 # Fungsi untuk membuat tabel catatan memancing jika belum ada
