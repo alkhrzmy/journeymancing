@@ -1,51 +1,42 @@
 import streamlit as st
-import mysql.connector
+import pandas as pd
+from sqlalchemy import create_engine
 
-# Koneksi ke database
-def create_connection():
-    conn = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='FarestaHaerz135',
-        database='journeymancing123'
+# Buat koneksi ke database
+engine = create_engine('mysql+mysqlconnector://username:password@host/database')
+
+# Fungsi untuk verifikasi login
+def verify_login(username, password):
+    query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+    df = pd.read_sql(query, engine)
+    return not df.empty
+
+# Halaman login Streamlit
+def login_page():
+    st.title("Journey Mancing")
+    st.markdown(
+        """
+        <style>
+        body {
+            background-image: url('https://example.com/background_image.jpg');
+            background-size: cover;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
     )
-    return conn
 
-# Fungsi untuk mengambil data pengguna dari database
-def get_user(username):
-    conn = create_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
-    user = cursor.fetchone()
-    cursor.close()
-    conn.close()
-    return user
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-# Fungsi untuk verifikasi password
-def verify_password(stored_password, provided_password):
-    # Di sini, bisa digunakan fungsi hashing untuk membandingkan password yang terenkripsi.
-    # Misalnya, bcrypt atau SHA256, tetapi untuk contoh sederhana, kita akan langsung membandingkan.
-    return stored_password == provided_password
-
-def main():
-    st.title('Journey Mancing')
-    st.image('background_image.jpg', use_column_width=True)
-
-    # Tampilkan form login
-    username = st.text_input('Username')
-    password = st.text_input('Password', type='password')
-
-    if st.button('Login'):
-        user = get_user(username)
-        if user:
-            if verify_password(user['password'], password):
-                st.success('Login berhasil!')
-                # Lanjutkan ke halaman selanjutnya setelah login berhasil
-                # Di sini kamu bisa menambahkan kode untuk menavigasi ke halaman berikutnya
-            else:
-                st.error('Password salah. Silakan coba lagi.')
+    if st.button("Login"):
+        if verify_login(username, password):
+            st.success("Login successful!")
+            # Redirect ke halaman berikutnya atau lakukan tindakan setelah login berhasil
+            # Misalnya:
+            # st.write("Lanjut ke halaman berikutnya")
         else:
-            st.error('Username tidak ditemukan.')
+            st.error("Username atau password salah")
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    login_page()
