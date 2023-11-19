@@ -4,10 +4,10 @@ import mysql.connector
 # Koneksi ke database
 def create_connection():
     conn = mysql.connector.connect(
-        host='hostname',
-        user='username',
-        password='password',
-        database='nama_database'
+        host='localhost',
+        user='root',
+        password='FarestaHaerz135',
+        database='journeymancing123'
     )
     return conn
 
