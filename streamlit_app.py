@@ -1,60 +1,51 @@
 import streamlit as st
-import sqlite3
-import pandas as pd
-from datetime import datetime
-import folium
+import mysql.connector
 
-import streamlit as st
-import sqlite3
-import pandas as pd
-import folium
+# Koneksi ke database
+def create_connection():
+    conn = mysql.connector.connect(
+        host='hostname',
+        user='username',
+        password='password',
+        database='nama_database'
+    )
+    return conn
 
-# Fungsi untuk membuat tabel catatan memancing jika belum ada
-def create_table():
-    # Kode untuk membuat tabel dalam database jika belum ada
-    pass
+# Fungsi untuk mengambil data pengguna dari database
+def get_user(username):
+    conn = create_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
 
-# Fungsi untuk menambahkan catatan memancing ke database
-def add_fishing_note(tanggal, lokasi, jenis_alat, cuaca, jumlah_ikan, jenis_ikan, ukuran_ikan, berat_ikan, latitude, longitude):
-    # Kode untuk menambahkan catatan ke database
-    pass
+# Fungsi untuk verifikasi password
+def verify_password(stored_password, provided_password):
+    # Di sini, bisa digunakan fungsi hashing untuk membandingkan password yang terenkripsi.
+    # Misalnya, bcrypt atau SHA256, tetapi untuk contoh sederhana, kita akan langsung membandingkan.
+    return stored_password == provided_password
 
-# Fungsi untuk menampilkan catatan memancing
-def show_fishing_notes():
-    # Kode untuk mengambil catatan dari database
-    return []
+def main():
+    st.title('Journey Mancing')
+    st.image('background_image.jpg', use_column_width=True)
 
-# Fungsi untuk melakukan analisis sederhana
-def perform_analysis():
-    # Kode untuk melakukan analisis pada data catatan memancing
-    return 0, 0, 0
+    # Tampilkan form login
+    username = st.text_input('Username')
+    password = st.text_input('Password', type='password')
 
-# Membuat tabel jika belum ada
-create_table()
+    if st.button('Login'):
+        user = get_user(username)
+        if user:
+            if verify_password(user['password'], password):
+                st.success('Login berhasil!')
+                # Lanjutkan ke halaman selanjutnya setelah login berhasil
+                # Di sini kamu bisa menambahkan kode untuk menavigasi ke halaman berikutnya
+            else:
+                st.error('Password salah. Silakan coba lagi.')
+        else:
+            st.error('Username tidak ditemukan.')
 
-# Login page
-if login():  # Fungsi login() harus diimplementasikan
-    # Judul halaman jika login berhasil
-    st.title('Catatan Memancing')
-    
-    # Formulir untuk menambahkan catatan memancing
-    st.header('Tambah Catatan Memancing')
-    # Kode untuk menampilkan formulir dengan st.date_input, st.text_input, dan lainnya
-
-    if st.button('Tambah Catatan'):
-        # Kode untuk menambahkan catatan menggunakan add_fishing_note()
-        st.success('Catatan berhasil ditambahkan!')
-
-    # Menampilkan catatan memancing
-    st.header('Catatan Memancing')
-    # Kode untuk menampilkan catatan menggunakan show_fishing_notes()
-
-    # Menampilkan peta dengan lokasi catatan memancing
-    st.header('Peta Lokasi Memancing')
-    # Kode untuk menampilkan peta menggunakan folium
-
-    # Analisis sederhana
-    st.header('Analisis Sederhana')
-    # Kode untuk melakukan analisis menggunakan perform_analysis()
-else:
-    st.stop()
+if __name__ == '__main__':
+    main()
