@@ -2,41 +2,46 @@ import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
 
-# Buat koneksi ke database
-engine = create_engine('mysql+mysqlconnector://username:password@host/database')
+# Fungsi untuk menghubungkan ke database SQL
+def create_connection():
+    engine = create_engine('mysql+mysqlconnector://username:password@localhost/nama_database')
+    conn = engine.connect()
+    return conn
 
-# Fungsi untuk verifikasi login
-def verify_login(username, password):
-    query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
-    df = pd.read_sql(query, engine)
-    return not df.empty
+# Fungsi untuk melakukan login
+def login(username, password):
+    conn = create_connection()
+    query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
+    result = conn.execute(query)
+    return result.fetchone()
 
-# Halaman login Streamlit
+# Fungsi untuk tampilan halaman login
 def login_page():
     st.title("Journey Mancing")
-    st.markdown(
-        """
-        <style>
-        body {
-            background-image: url('https://example.com/background_image.jpg');
-            background-size: cover;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("## Silakan login untuk melanjutkan")
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
+    login_button = st.button("Login")
 
-    if st.button("Login"):
-        if verify_login(username, password):
-            st.success("Login successful!")
-            # Redirect ke halaman berikutnya atau lakukan tindakan setelah login berhasil
-            # Misalnya:
-            # st.write("Lanjut ke halaman berikutnya")
+    if login_button:
+        user = login(username, password)
+        if user:
+            st.success("Login berhasil!")
+            # Redirect ke halaman selanjutnya setelah login berhasil
+            st.write("Halaman selanjutnya...")
         else:
-            st.error("Username atau password salah")
+            st.error("Login gagal. Silakan coba lagi.")
 
-if __name__ == "__main__":
+# Fungsi untuk tampilan halaman utama
+def main_page():
+    st.title("Halaman Utama")
+    st.markdown("## Selamat datang di Journey Mancing!")
+    st.markdown("Silakan login untuk memulai.")
+
+# Logika untuk menampilkan halaman login atau halaman utama berdasarkan status login
+is_logged_in = False  # Ganti dengan fungsi cek login yang sesuai
+if is_logged_in:
+    main_page()
+else:
     login_page()
