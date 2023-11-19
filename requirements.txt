@@ -1,2 +1,4 @@
+sqlalchemy
+mysql-connector-python
 
 folium
