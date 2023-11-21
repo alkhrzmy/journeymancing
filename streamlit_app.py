@@ -13,7 +13,7 @@ st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide"
 
 st.header("Journal Mancing®")
 
-image = Image.open('sunrise.jpg')
+image = Image.open('https://images.pexels.com/photos/1105386/pexels-photo-1105386.jpeg')
 
 st.image(image, caption='Sunrise by the mountains')
 
