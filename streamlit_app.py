@@ -109,9 +109,11 @@ if authentication_status:
 
         # Tombol untuk menyimpan catatan memancing
         if st.button("Simpan Catatan"):
-            # Simpan catatan memancing ke database atau file
+            # Simpan catatan ke dalam file
+            note_data = [combined_datetime, fish_type, fishing_method, location_details]
+            save_note(note_data)
             st.success("Catatan Mancing Disimpan")
-
+    
             # Mendapatkan info cuaca
             weather_info = get_weather_info(latitude, longitude)
             st.subheader("Info Cuaca")
@@ -142,6 +144,31 @@ if authentication_status:
                 st.error("Username atau password salah")
         
         return False  # Kembalikan False jika login gagal
+
+    def save_note(note):
+        with open('notes.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(note)
+    
+    def read_notes():
+        with open('notes.csv', 'r') as file:
+            reader = csv.reader(file)
+            notes = list(reader)
+        return notes
+    
+    def edit_note(index, updated_note):
+        notes = read_notes()
+        notes[index] = updated_note
+        with open('notes.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(notes)
+    
+    def delete_note(index):
+        notes = read_notes()
+        del notes[index]
+        with open('notes.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(notes)
 
     authenticator.logout("Logout","sidebar")
     st.sidebar.title(f"Welcome {name}")
