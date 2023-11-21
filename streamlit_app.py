@@ -102,15 +102,6 @@ if authentication_status:
                 note_data = [combined_datetime, fish_type, fishing_method, location_details]
     
                 # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
-                with open('catatan_mancing.csv', 'a') as file:
-                    file.write(','.join(map(str, note_data)) + '\n')
-    
-                repo = git.Repo('https://raw.githubusercontent.com/alkhrzmy/journeymancing/main/streamlit_app.py')
-                repo.git.add('catatan_mancing.csv')
-                repo.index.commit("Menambahkan catatan mancing")
-                origin = repo.remote(name='origin')
-                origin.push()
-    
                 st.success("Catatan Mancing Disimpan")
     
                 # Mendapatkan info cuaca jika koordinat telah didapat
@@ -126,47 +117,15 @@ if authentication_status:
 
     # Fungsi untuk mengedit catatan
     def edit_note(index, updated_note):
-        st.title("Edit Catatan Mancing")
-        notes = read_notes()
-        notes[index] = updated_note
-        with open('notes.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(notes)
-            
+        pass
+        
     # Fungsi untuk menghapus catatan
     def delete_note(index):
-        st.title("Hapus Catatan")
-        notes = read_notes()
-        del notes[index]
-        with open('notes.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(notes)
-            
-    def login_page():
-        st.title("Login")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-
-        if st.button("Login"):
-            if verify_login(username, password):
-                st.success("Login berhasil!")
-                return True  # Kembalikan True jika login berhasil
-            else:
-                st.error("Username atau password salah")
-        
-        return False  # Kembalikan False jika login gagal
+        pass
 
 
     def tampilkan_catatan():
-        st.header("Catatan-catatan Sebelumnya:")
-        previous_notes = read_notes()  # Membaca catatan-catatan dari file CSV
-    
-        if previous_notes:
-            for i, note in enumerate(previous_notes):
-                st.write(f"Catatan ke-{i + 1}:")
-                st.write(f"Tanggal: {note[0]}, Jenis Ikan: {note[1]}, Metode Memancing: {note[2]}, Detail Lokasi: {note[3]}")
-        else:
-            st.write("Belum ada catatan yang tersimpan.")
+        pass
     
     authenticator.logout("Logout","sidebar")
     st.sidebar.title(f"Welcome {name}")
