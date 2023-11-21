@@ -131,9 +131,9 @@ if authentication_status:
     def sidebar_navigation():
         st.sidebar.title("Navigation")
         pages = ["Home", "Analytics"]  # Define different pages
-        choice = st.sidebar.columns("Go to", pages)
+        choice = st.sidebar.slider("Go to", 0, len(pages) - 1, 0, format_func=lambda x: pages[x])
     
-        return choice
+        return pages[choice]
     
     # Function to display analytics page
     def analytics_page():
