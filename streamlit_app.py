@@ -211,15 +211,15 @@ if authentication_status:
 
     # Fungsi untuk mengedit catatan
     def edit_note(index, updated_note):
-        pass
+        st.write("Journal")
         
     # Fungsi untuk menghapus catatan
     def delete_note(index):
-        pass
+        st.write("Journal")
 
 
     def tampilkan_catatan():
-        pass
+        st.write("Journal")
 
         # Sidebar navigation function
     current_page = "Home"  # Inisialisasi status halaman
