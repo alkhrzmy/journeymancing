@@ -1,4 +1,5 @@
 import streamlit as st
+import git
 import csv
 import requests
 import datetime
@@ -109,10 +110,20 @@ if authentication_status:
         fishing_method = st.text_input("Metode Memancing")
 
         # Tombol untuk menyimpan catatan memancing
+        repo = git.Repo('/path/to/your/local/repo')  # Ganti dengan path ke repositori lokal Anda
+
         if st.button("Simpan Catatan"):
-            # Simpan catatan ke dalam file
             note_data = [combined_datetime, fish_type, fishing_method, location_details]
-            save_note(note_data)
+            # Simpan data catatan ke dalam file lokal
+            with open('catatan_mancing.csv', 'a') as file:
+                file.write(','.join(map(str, note_data)) + '\n')
+            
+            # Lakukan commit dan push ke repositori GitHub
+            repo.git.add('catatan_mancing.csv')
+            repo.index.commit("Menambahkan catatan mancing")
+            origin = repo.remote(name='origin')
+            origin.push()
+            
             st.success("Catatan Mancing Disimpan")
     
             # Mendapatkan info cuaca
@@ -178,10 +189,6 @@ if authentication_status:
     
     authenticator.logout("Logout","sidebar")
     st.sidebar.title(f"Welcome {name}")
-
-    show_add = False
-    show_edit = False
-    show_delete = False
 
 
     def main_page():
