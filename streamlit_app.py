@@ -134,14 +134,16 @@ if authentication_status:
     def main_page():
         st.title("Halaman Utama")
 
-        navigation = st.sidebar.radio("Menu", ["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
-    
-        if navigation == "Tambah Catatan":
+        add_button = st.button("Tambah Catatan")
+        edit_button = st.button("Edit Catatan")
+        delete_button = st.button("Hapus Catatan")
+
+        if add_button:
             add_note()
-        elif navigation == "Edit Catatan":
+        if edit_button:
             edit_note()
             # Tambahkan logika atau tampilan untuk halaman Edit Catatan di sini
-        elif navigation == "Hapus Catatan":
+        if delete_button:
             delete_note()
 
     def main():
