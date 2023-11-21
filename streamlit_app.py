@@ -244,17 +244,11 @@ if authentication_status:
     def button_coiche():
         col1, col2, col3 = st.columns(3)
         
-        # Menempatkan tombol-tombol di kolom-kolom yang telah dibuat
-        with col1:
-            if st.button("Tambah Catatan"):
+        if st.button("Tambah Catatan"):
                 add_note()
-        
-        with col2:
-            if st.button("Edit Catatan"):
+        if st.button("Edit Catatan"):
                 edit_note()
-        
-        with col3:
-            if st.button("Hapus Catatan"):
+        if st.button("Hapus Catatan"):
                 delete_note()
 
 
