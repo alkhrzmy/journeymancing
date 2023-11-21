@@ -8,6 +8,8 @@ import streamlit_authenticator as stauth
 
 st.set_page_config(page_title="Journey Mancing", page_icon="🎣", layout="wide")
 
+st.header("Journey Mancing®")
+
 # ----- USER AUTHENTICATION
 names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
 usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
@@ -93,9 +95,16 @@ if authentication_status:
             if coordinates:
                 latitude, longitude = coordinates
                 st.write("Latitude:", latitude, "Longitude:", longitude)
-        # Memasukkan tanggal dan waktu
-        date_time = st.date_input("Tanggal") + st.time_input("Waktu")
+        # Input tanggal
+        input_date = st.date_input("Tanggal")
 
+        # Input waktu
+        input_time = st.time_input("Waktu")
+
+        # Menggabungkan tanggal dan waktu menjadi objek datetime
+        combined_datetime = datetime.datetime.combine(input_date, input_time)
+
+        
         # Memasukkan jenis ikan yang ditangkap
         fish_type = st.text_input("Jenis Ikan yang Ditangkap")
 
