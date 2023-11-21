@@ -4,24 +4,24 @@ import datetime
 import requests
 import datetime
 
-import pickle
 import streamlit_authenticator as stauth
 from pathlib import Path
 
 st.set_page_config(page_title="Journey Mancing", page_icon="🎣", layout="wide")
 
 # ----- USER AUTHENTICATION
-names = ["admin", "Feryadi Yulius", "Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
+names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
 usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
-
+passwords = ["admin", "data", "data", "data", "data"]
+"""
 # Load Hashed Passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
-
+"""
 credentials = {"usernames":{}}
 
-for un, name, pw in zip(usernames, names, hashed_passwords):
+for un, name, pw in zip(usernames, names, passwords):
     user_dict = {"name":name,"password":pw}
     credentials["usernames"].update({un:user_dict})
 
