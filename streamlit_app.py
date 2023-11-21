@@ -134,7 +134,7 @@ if authentication_status:
     def main_page():
         st.title("Halaman Utama")
 
-        option = st.selectbox("Pilih Operasi", ["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
+        option = st.columns("Pilih Operasi", ["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
 
         if option == "Tambah Catatan":
             add_note()
@@ -143,7 +143,7 @@ if authentication_status:
         elif option == "Hapus Catatan":
             delete_note()
 
-        
+
 
 
     def main():
