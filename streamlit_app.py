@@ -61,21 +61,7 @@ if authentication_status:
         }
 
         return fake_weather
-    # Fungsi untuk verifikasi login
-    def verify_login(username, password):
-        # Ganti URL dengan URL file txt di GitHub yang berisi username dan password
-        url = 'https://raw.githubusercontent.com/strng-fer/tubesalpro/main/user.txt'
-        response = requests.get(url)
-        credentials = response.text.split('\n')
         
-        for cred in credentials:
-            if ',' in cred:
-                stored_username, stored_password = cred.split(',')
-                if username == stored_username and password == stored_password:
-                    return True
-        
-        return False
-
     # Fungsi untuk menambahkan catatan memancing
     def add_note():
         st.title("Tambah Catatan Mancing")
@@ -90,7 +76,7 @@ if authentication_status:
         location = st.text_input("Cari Lokasi")
         latitude, longitude = None, None  # Initialize to None
         if location:
-            coordinates = get_coordinates(location)
+            coordinates = get_coordinates(location):
             if coordinates:
                 latitude, longitude = coordinates
                 st.write("Latitude:", latitude, "Longitude:", longitude)
