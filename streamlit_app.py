@@ -197,9 +197,9 @@ if authentication_status:
 
         if st.button("Tambah Catatan"):
             add_note()
-        elif option == "Edit Catatan":
+        elif st.button("Edit Catatan"):
             edit_note()
-        elif option == "Hapus Catatan":
+        elif st.button("Hapus Catatan"):
             delete_note()
 
 
