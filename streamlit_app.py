@@ -240,7 +240,6 @@ if authentication_status:
         st.title("Analytics Page")
         # Add your analytics content here
         st.write("Analytics content goes here")
-        sidebar_navigation()
 
     def button_coiche():
         
@@ -256,7 +255,6 @@ if authentication_status:
     def main_page():
         st.title("Home Page")
         button_coiche()
-        sidebar_navigation()
 
 
     def main():
