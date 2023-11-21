@@ -46,7 +46,19 @@ if authentication_status:
             return None
 
     # Function to get weather info from a suitable weather API using latitude and longitude
+    def get_weather_info(latitude, longitude):
+    # Implement logic to fetch weather info from a weather API using latitude and longitude
+    # Use an appropriate weather API (e.g., OpenWeatherMap, WeatherAPI, etc.)
+    # Replace the code here with the API call to get weather information
 
+    # Example fake weather data
+    fake_weather = {
+        "temperature": "25°C",
+        "condition": "Sunny",
+        "wind_speed": "5 m/s"
+    }
+
+    return fake_weather
     # Fungsi untuk verifikasi login
     def verify_login(username, password):
         # Ganti URL dengan URL file txt di GitHub yang berisi username dan password
@@ -73,7 +85,12 @@ if authentication_status:
         location_details = st.text_input("Detail Lokasi")
 
         # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
-
+        location = st.text_input("Cari Lokasi")
+        if location:
+            coordinates = get_coordinates(location)
+            if coordinates:
+                latitude, longitude = coordinates
+                st.write("Latitude:", latitude, "Longitude:", longitude)
         # Input tanggal
         input_date = st.date_input("Tanggal")
 
@@ -96,7 +113,11 @@ if authentication_status:
             st.success("Catatan Mancing Disimpan")
 
             # Mendapatkan info cuaca
-
+            weather_info = get_weather_info(latitude, longitude)
+            st.subheader("Info Cuaca")
+            st.write(f"Temperatur: {weather_info['temperature']}")
+            st.write(f"Kondisi Cuaca: {weather_info['condition']}")
+            st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
 
     # Fungsi untuk mengedit catatan
     def edit_note():
