@@ -134,16 +134,14 @@ if authentication_status:
     def main_page():
         st.title("Halaman Utama")
 
-        option = st.columns("Pilih Operasi", ["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
-
-        if option == "Tambah Catatan":
+        button_col1, button_col2, button_col3 = st.columns(3)
+        
+        if button_col1.button("Tambah Catatan"):
             add_note()
-        elif option == "Edit Catatan":
+        elif button_col2.button("Edit Catatan"):
             edit_note()
-        elif option == "Hapus Catatan":
+        elif button_col3.button("Hapus Catatan"):
             delete_note()
-
-
 
 
     def main():
