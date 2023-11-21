@@ -222,14 +222,17 @@ if authentication_status:
         pass
 
         # Sidebar navigation function
+    current_page = "Home"  # Inisialisasi status halaman
+
     def sidebar_navigation():
         st.sidebar.title("Wellcome bro")
+        global current_page  # Gunakan variabel global untuk menyimpan status halaman terkini
         if st.sidebar.button("Home"):
-            return "Home"
+            current_page = "Home"
         elif st.sidebar.button("Analytics"):
-            return "Analytics"
-        else:
-            return "Home"
+            current_page = "Analytics"
+        return current_page  # Mengembalikan status halaman terkini
+    
 
     
     # Function to display analytics page
