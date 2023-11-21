@@ -146,19 +146,16 @@ if authentication_status:
         authenticator.logout("Logout","sidebar")
         st.sidebar.title(f"Welcome {name}")
 
-    def coiche_button():
-        button_col1, button_col2, button_col3 = st.columns(3)
-        
-        if button_col1.button("Tambah Catatan"):
-            return add_note()
-        elif button_col2.button("Edit Catatan"):
-            return edit_note()
-        elif button_col3.button("Hapus Catatan"):
-            return delete_note()
 
     def main_page():
-        st.title("Halaman Utama")
-        coiche_button()
+        
+        if st.button("Tambah Catatan"):
+            add_note()
+        elif st.button("Edit Catatan"):
+            edit_note()
+        elif st.button("Hapus Catatan"):
+            delete_note()
+
 
     def main():
         choice = sidebar_navigation()
