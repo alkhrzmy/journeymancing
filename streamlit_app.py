@@ -82,57 +82,61 @@ if authentication_status:
         
         # Memasukkan foto
         uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
-
+    
         # Memasukkan detail lokasi
         location_details = st.text_input("Detail Lokasi")
-
+    
         # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
         location = st.text_input("Cari Lokasi")
+        latitude, longitude = None, None  # Initialize to None
         if location:
             coordinates = get_coordinates(location)
             if coordinates:
                 latitude, longitude = coordinates
                 st.write("Latitude:", latitude, "Longitude:", longitude)
+    
         # Input tanggal
         input_date = st.date_input("Tanggal")
-
+    
         # Input waktu
         input_time = st.time_input("Waktu")
-
+    
         # Menggabungkan tanggal dan waktu menjadi objek datetime
         combined_datetime = datetime.datetime.combine(input_date, input_time)
-
     
         # Memasukkan jenis ikan yang ditangkap
         fish_type = st.text_input("Jenis Ikan yang Ditangkap")
-
+    
         # Memasukkan metode memancing
         fishing_method = st.text_input("Metode Memancing")
-
-        # Tombol untuk menyimpan catatan memancing
-        url = 'https://raw.githubusercontent.com/alkhrzmy/journeymancing/main/catatan_mancing.csv'
-        repo = requests.get(url)
-        
-        if st.button("Simpan Catatan"):
-            note_data = [combined_datetime, fish_type, fishing_method, location_details]
-            # Simpan data catatan ke dalam file lokal
-            with open('catatan_mancing.csv', 'a') as file:
-                file.write(','.join(map(str, note_data)) + '\n')
-            
-            # Lakukan commit dan push ke repositori GitHub
-            repo.git.add('catatan_mancing.csv')
-            repo.index.commit("Menambahkan catatan mancing")
-            origin = repo.remote(name='origin')
-            origin.push()
-            
-            st.success("Catatan Mancing Disimpan")
     
-            # Mendapatkan info cuaca
-            weather_info = get_weather_info(latitude, longitude)
-            st.subheader("Info Cuaca")
-            st.write(f"Temperatur: {weather_info['temperature']}")
-            st.write(f"Kondisi Cuaca: {weather_info['condition']}")
-            st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
+        # Tombol untuk menyimpan catatan memancing
+        if st.button("Simpan Catatan"):
+            if latitude is not None and longitude is not None:
+                note_data = [combined_datetime, fish_type, fishing_method, location_details]
+    
+                # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
+                with open('catatan_mancing.csv', 'a') as file:
+                    file.write(','.join(map(str, note_data)) + '\n')
+    
+                repo = git.Repo('https://raw.githubusercontent.com/alkhrzmy/journeymancing/main/streamlit_app.py')
+                repo.git.add('catatan_mancing.csv')
+                repo.index.commit("Menambahkan catatan mancing")
+                origin = repo.remote(name='origin')
+                origin.push()
+    
+                st.success("Catatan Mancing Disimpan")
+    
+                # Mendapatkan info cuaca jika koordinat telah didapat
+                if latitude and longitude:
+                    weather_info = get_weather_info(latitude, longitude)
+                    st.subheader("Info Cuaca")
+                    st.write(f"Temperatur: {weather_info['temperature']}")
+                    st.write(f"Kondisi Cuaca: {weather_info['condition']}")
+                    st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
+            else:
+                st.warning("Harap cari lokasi yang valid untuk mendapatkan informasi cuaca")
+    
 
     # Fungsi untuk mengedit catatan
     def edit_note(index, updated_note):
@@ -166,16 +170,6 @@ if authentication_status:
         
         return False  # Kembalikan False jika login gagal
 
-    def save_note(note):
-        with open('notes.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(note)
-    
-    def read_notes():
-        with open('notes.csv', 'r') as file:
-            reader = csv.reader(file)
-            notes = list(reader)
-        return notes
 
     def tampilkan_catatan():
         st.header("Catatan-catatan Sebelumnya:")
