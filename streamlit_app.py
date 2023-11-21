@@ -163,32 +163,6 @@ if authentication_status:
                 document.getElementById('location-snap').innerHTML = place.formatted_address;
                 document.getElementById('lat-span').innerHTML = place.geometry.location.lat();
                 document.getElementById('lon-span').innerHTML = place.geometry.location.lng();
-            
-                var lat = place.geometry.location.lat();
-                var lon = place.geometry.location.lng();
-            
-                // Membuat objek JSON
-                var locationData = {'latitude': lat, 'longitude': lon};
-                
-                // Mengonversi objek JSON ke string
-                var jsonString = JSON.stringify(locationData);
-                
-                // Membuat blob dari string JSON
-                var blob = new Blob([jsonString], { type: 'application/json' });
-                
-                // Membuat URL objek blob
-                var url = URL.createObjectURL(blob);
-
-                // Membuat elemen <a> untuk mendownload file JSON
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'location.json';
-
-                document.body.appendChild(a);
-                a.click();
-
-                // Menghapus elemen <a> setelah selesai
-                document.body.removeChild(a);
             });
         }
         </script>
