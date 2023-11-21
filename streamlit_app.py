@@ -1,8 +1,6 @@
 import streamlit as st
 import requests
 import datetime
-import requests
-import datetime
 
 import streamlit_authenticator as stauth
 
@@ -48,20 +46,6 @@ if authentication_status:
             return None
 
     # Function to get weather info from a suitable weather API using latitude and longitude
-    def get_weather_info(latitude, longitude):
-        # Implement logic to fetch weather info from a weather API using latitude and longitude
-        # Use an appropriate weather API (e.g., OpenWeatherMap, WeatherAPI, etc.)
-        # Replace the code here with the API call to get weather information
-
-        # Example fake weather data
-        fake_weather = {
-            "temperature": "25°C",
-            "condition": "Sunny",
-            "wind_speed": "5 m/s"
-        }
-
-        return fake_weather
-
 
     # Fungsi untuk verifikasi login
     def verify_login(username, password):
@@ -89,12 +73,7 @@ if authentication_status:
         location_details = st.text_input("Detail Lokasi")
 
         # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
-        location = st.text_input("Cari Lokasi")
-        if location:
-            coordinates = get_coordinates(location)
-            if coordinates:
-                latitude, longitude = coordinates
-                st.write("Latitude:", latitude, "Longitude:", longitude)
+
         # Input tanggal
         input_date = st.date_input("Tanggal")
 
@@ -104,7 +83,7 @@ if authentication_status:
         # Menggabungkan tanggal dan waktu menjadi objek datetime
         combined_datetime = datetime.datetime.combine(input_date, input_time)
 
-        
+    
         # Memasukkan jenis ikan yang ditangkap
         fish_type = st.text_input("Jenis Ikan yang Ditangkap")
 
