@@ -223,7 +223,7 @@ if authentication_status:
 
         # Sidebar navigation function
     def sidebar_navigation():
-        st.sidebar.title("Navigation")
+        st.sidebar.title("Wellcome bro")
         if st.sidebar.button("Home"):
             return "Home"
         elif st.sidebar.button("Analytics"):
@@ -237,8 +237,6 @@ if authentication_status:
         st.title("Analytics Page")
         # Add your analytics content here
         st.write("Analytics content goes here")
-        
-        authenticator.logout("Logout","sidebar")
         sidebar_navigation()
 
     def button_coiche():
