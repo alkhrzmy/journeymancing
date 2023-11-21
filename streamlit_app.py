@@ -246,11 +246,11 @@ if authentication_status:
     def button_coiche():
         button_col1, button_col2, button_col3 = st.tabs(["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
         
-        with tab1:
+        with button_col1:
             add_note()
-        with tab2:
+        with button_col2:
             edit_note()
-        with tab3:
+        with button_col3:
             delete_note()
 
 
