@@ -126,9 +126,23 @@ if authentication_status:
 
     def tampilkan_catatan():
         pass
+
+        # Sidebar navigation function
+    def sidebar_navigation():
+        st.sidebar.title("Navigation")
+        pages = ["Home", "Analytics"]  # Define different pages
+        choice = st.sidebar.selectbox("Go to", pages)
     
-    authenticator.logout("Logout","sidebar")
-    st.sidebar.title(f"Welcome {name}")
+        return choice
+    
+    # Function to display analytics page
+    def analytics_page():
+        st.title("Analytics Page")
+        # Add your analytics content here
+        st.write("Analytics content goes here")
+        
+        authenticator.logout("Logout","sidebar")
+        st.sidebar.title(f"Welcome {name}")
 
 
     def main_page():
@@ -144,7 +158,11 @@ if authentication_status:
             delete_note()
 
     def main():
-        main_page()
+        choice = sidebar_navigation()
+        if choice == "Home":
+            main_page()
+        elif choice == "Analytics":
+            analytics_page()
 
     if __name__ == "__main__":
         main()
