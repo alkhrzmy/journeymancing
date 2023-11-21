@@ -123,15 +123,23 @@ if authentication_status:
             st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
 
     # Fungsi untuk mengedit catatan
-    def edit_note():
-        st.title("Edit Catatan")
-        # Implementasikan logika untuk mengedit catatan di sini
-
+    def edit_note(index, updated_note):
+        st.title("Edit Catatan Mancing")
+        notes = read_notes()
+        notes[index] = updated_note
+        with open('notes.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(notes)
+            
     # Fungsi untuk menghapus catatan
-    def delete_note():
+    def delete_note(index):
         st.title("Hapus Catatan")
-        # Implementasikan logika untuk menghapus catatan di sini
-
+        notes = read_notes()
+        del notes[index]
+        with open('notes.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(notes)
+            
     def login_page():
         st.title("Login")
         username = st.text_input("Username")
@@ -157,20 +165,6 @@ if authentication_status:
             notes = list(reader)
         return notes
     
-    def edit_note(index, updated_note):
-        notes = read_notes()
-        notes[index] = updated_note
-        with open('notes.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(notes)
-    
-    def delete_note(index):
-        notes = read_notes()
-        del notes[index]
-        with open('notes.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(notes)
-
     authenticator.logout("Logout","sidebar")
     st.sidebar.title(f"Welcome {name}")
 
