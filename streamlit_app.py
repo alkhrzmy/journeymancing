@@ -133,17 +133,14 @@ if authentication_status:
 
     def main_page():
         st.title("Halaman Utama")
-
-        add_button = st.button("Tambah Catatan")
-        edit_button = st.button("Edit Catatan")
-        delete_button = st.button("Hapus Catatan")
-
-        if add_button:
+    
+        button_col1, button_col2, button_col3 = st.columns(3)
+        
+        if button_col1.button("Tambah Catatan"):
             add_note()
-        if edit_button:
+        elif button_col2.button("Edit Catatan"):
             edit_note()
-            # Tambahkan logika atau tampilan untuk halaman Edit Catatan di sini
-        if delete_button:
+        elif button_col3.button("Hapus Catatan"):
             delete_note()
 
     def main():
