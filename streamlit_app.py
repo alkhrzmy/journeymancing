@@ -6,6 +6,8 @@ import datetime
 
 import streamlit_authenticator as stauth
 
+import streamlit.components.v1 as components
+
 st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
 st.header("Journal Mancing®")
@@ -34,19 +36,6 @@ if authentication_status == None:
 
 if authentication_status:
 
-    # Function to get latitude and longitude using Bing Maps API
-    def get_coordinates(location):
-        bing_maps_api_key = "Ag3lpNHBmRK6m0_yR0F-0IkUghCAglU5Yl4x8a0oJbkCoCB6-4Ha_UQelLt7C6SK"  # Replace with your Bing Maps API key
-        url = f"https://dev.virtualearth.net/REST/v1/Locations?q={location}&key={bing_maps_api_key}"
-        response = requests.get(url)
-        data = response.json()
-        
-        if response.status_code == 200 and data.get('resourceSets'):
-            coordinates = data['resourceSets'][0]['resources'][0]['point']['coordinates']
-            return coordinates  # Return latitude and longitude as [latitude, longitude]
-        else:
-            return None
-
     # Function to get weather info from a suitable weather API using latitude and longitude
     def get_weather_info(latitude, longitude):
     # Implement logic to fetch weather info from a weather API using latitude and longitude
@@ -73,13 +62,144 @@ if authentication_status:
         location_details = st.text_input("Detail Lokasi")
     
         # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
-        location = st.text_input("Cari Lokasi")
-        latitude, longitude = None, None  # Initialize to None
-        if location:
-            coordinates = get_coordinates(location)
-            if coordinates:
-                latitude, longitude = coordinates
-                st.write("Latitude:", latitude, "Longitude:", longitude)
+        # HTML template for the location picker
+
+        google_maps_autocomplete = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Google Maps API - Autocomplete Address Search Box with Map Example</title>
+            <style type="text/css">
+                #map {
+                    width: 100%;
+                    height: 400px;
+                }
+                .mapControls {
+                    margin-top: 10px;
+                    border: 1px solid transparent;
+                    border-radius: 2px 0 0 2px;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    height: 32px;
+                    outline: none;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                }
+                #searchMapInput {
+                    background-color: #fff;
+                    font-family: Roboto;
+                    font-size: 15px;
+                    font-weight: 300;
+                    margin-left: 12px;
+                    padding: 0 11px 0 13px;
+                    text-overflow: ellipsis;
+                    width: 50%;
+                }
+                #searchMapInput:focus {
+                    border-color: #4d90fe;
+                }
+            </style>
+        </head>
+        <body>
+        
+        <input id="searchMapInput" class="mapControls" type="text" placeholder="Enter a location">
+        <div id="map"></div>
+        <ul id="geoData">
+            <li>Full Address: <span id="location-snap"></span></li>
+            <li>Latitude: <span id="lat-span"></span></li>
+            <li>Longitude: <span id="lon-span"></span></li>
+        </ul>
+        
+        <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -5.3582643, lng: 105.3148495},
+            zoom: 13
+            });
+            var input = document.getElementById('searchMapInput');
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+        
+            var infowindow = new google.maps.InfoWindow();
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+            });
+        
+            autocomplete.addListener('place_changed', function() {
+                infowindow.close();
+                marker.setVisible(false);
+                var place = autocomplete.getPlace();
+            
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+                marker.setIcon(({
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(35, 35)
+                }));
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+            
+                var address = '';
+                if (place.address_components) {
+                    address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                    ].join(' ');
+                }
+            
+                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                infowindow.open(map, marker);
+                
+                document.getElementById('location-snap').innerHTML = place.formatted_address;
+                document.getElementById('lat-span').innerHTML = place.geometry.location.lat();
+                document.getElementById('lon-span').innerHTML = place.geometry.location.lng();
+            
+                var lat = place.geometry.location.lat();
+                var lon = place.geometry.location.lng();
+            
+                // Membuat objek JSON
+                var locationData = {'latitude': lat, 'longitude': lon};
+                
+                // Mengonversi objek JSON ke string
+                var jsonString = JSON.stringify(locationData);
+                
+                // Membuat blob dari string JSON
+                var blob = new Blob([jsonString], { type: 'application/json' });
+                
+                // Membuat URL objek blob
+                var url = URL.createObjectURL(blob);
+
+                // Membuat elemen <a> untuk mendownload file JSON
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'location.json';
+
+                document.body.appendChild(a);
+                a.click();
+
+                // Menghapus elemen <a> setelah selesai
+                document.body.removeChild(a);
+            });
+        }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6JQDWAVYXN07fZAtBK-ATcBg750J68bQ&libraries=places&callback=initMap" async defer></script>
+
+        </body>
+        </html>
+        """
+        # Display the location picker
+        components.html(google_maps_autocomplete, height=600)
+        
     
         # Input tanggal
         input_date = st.date_input("Tanggal")
