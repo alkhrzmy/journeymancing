@@ -13,9 +13,6 @@ st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide"
 
 st.header("Journal Mancing®")
 
-image = Image.open('https://images.pexels.com/photos/1105386/pexels-photo-1105386.jpeg')
-
-st.image(image, caption='Sunrise by the mountains')
 
 # ----- USER AUTHENTICATION
 names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
@@ -247,13 +244,13 @@ if authentication_status:
         st.write("Analytics content goes here")
 
     def button_coiche():
-        button_col1, button_col2, button_col3 = st.columns(3)
+        button_col1, button_col2, button_col3 = st.tabs(["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
         
-        if button_col1.button("Tambah Catatan"):
+        with tab1:
             add_note()
-        if button_col2.button("Edit Catatan"):
+        with tab2:
             edit_note()
-        if button_col3.button("Hapus Catatan"):
+        with tab3:
             delete_note()
 
 
