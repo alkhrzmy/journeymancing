@@ -5,7 +5,6 @@ import requests
 import datetime
 
 import streamlit_authenticator as stauth
-from pathlib import Path
 
 st.set_page_config(page_title="Journey Mancing", page_icon="🎣", layout="wide")
 
