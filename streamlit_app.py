@@ -3,6 +3,7 @@ import git
 import csv
 import requests
 import datetime
+from PIL import Image
 
 import streamlit_authenticator as stauth
 
@@ -11,6 +12,10 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
 st.header("Journal Mancing®")
+
+image = Image.open('sunrise.jpg')
+
+st.image(image, caption='Sunrise by the mountains')
 
 # ----- USER AUTHENTICATION
 names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
