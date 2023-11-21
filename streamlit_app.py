@@ -239,7 +239,7 @@ if authentication_status:
         st.write("Analytics content goes here")
         
         authenticator.logout("Logout","sidebar")
-        st.sidebar.title(f"Welcome {name}")
+        sidebar_navigation()
 
     def button_coiche():
         
@@ -255,6 +255,7 @@ if authentication_status:
     def main_page():
         st.title("Home Page")
         button_coiche()
+        sidebar_navigation()
 
 
     def main():
