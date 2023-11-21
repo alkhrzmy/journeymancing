@@ -110,8 +110,9 @@ if authentication_status:
         fishing_method = st.text_input("Metode Memancing")
 
         # Tombol untuk menyimpan catatan memancing
-        repo = git.Repo('https://raw.githubusercontent.com/alkhrzmy/journeymancing/main/catatan_mancing.csv')  # Ganti dengan path ke repositori lokal Anda
-
+        url = 'https://raw.githubusercontent.com/alkhrzmy/journeymancing/main/catatan_mancing.csv'
+        repo = requests.get(url)
+        
         if st.button("Simpan Catatan"):
             note_data = [combined_datetime, fish_type, fishing_method, location_details]
             # Simpan data catatan ke dalam file lokal
