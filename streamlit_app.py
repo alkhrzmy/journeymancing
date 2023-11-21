@@ -9,6 +9,7 @@ from pathlib import Path
 
 st.set_page_config(page_title="Journey Mancing", page_icon="🎣", layout="wide")
 
+st.header("Journey Mancing®")
 # ----- USER AUTHENTICATION
 names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
 usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
