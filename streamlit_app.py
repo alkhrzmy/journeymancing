@@ -242,14 +242,14 @@ if authentication_status:
         st.write("Analytics content goes here")
 
     def button_coiche():
-        col1, col2, col3 = st.columns(3)
+        button_col1, button_col2, button_col3 = st.columns(3)
         
-        if st.button("Tambah Catatan"):
-                add_note()
-        if st.button("Edit Catatan"):
-                edit_note()
-        if st.button("Hapus Catatan"):
-                delete_note()
+        if button_col1.button("Tambah Catatan"):
+            add_note()
+        if button_col2.button("Edit Catatan"):
+            edit_note()
+        if button_col3.button("Hapus Catatan"):
+            delete_note()
 
 
     def main_page():
