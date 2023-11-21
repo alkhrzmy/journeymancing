@@ -228,8 +228,7 @@ if authentication_status:
             return "Home"
         elif st.sidebar.button("Analytics"):
             return "Analytics"
-        else:
-            return "Home"  # Default to Home if no button is clicked
+
     
     # Function to display analytics page
     def analytics_page():
