@@ -168,9 +168,31 @@ if authentication_status:
     authenticator.logout("Logout","sidebar")
     st.sidebar.title(f"Welcome {name}")
 
+    show_add = False
+    show_edit = False
+    show_delete = False
+
+
     def main_page():
         st.title("Halaman Utama")
         option = st.selectbox("Pilih Operasi", ["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
+        
+        
+        global show_add, show_edit, show_delete
+    
+        if option == "Tambah Catatan":
+            show_add = True
+            show_edit = False
+            show_delete = False
+        elif option == "Edit Catatan":
+            show_add = False
+            show_edit = True
+            show_delete = False
+        elif option == "Hapus Catatan":
+            show_add = False
+            show_edit = False
+            show_delete = True
+
 
         if option == "Tambah Catatan":
             add_note()
