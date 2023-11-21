@@ -242,14 +242,29 @@ if authentication_status:
         st.write("Analytics content goes here")
 
     def button_coiche():
+        # Mendefinisikan variabel untuk menyimpan status tombol yang ditekan
+        button_pressed = False
         
         if st.button("Tambah Catatan"):
-            add_note()
+            button_pressed = "Tambah Catatan"
+        
         elif st.button("Edit Catatan"):
-            edit_note()
+            button_pressed = "Edit Catatan"
+        
         elif st.button("Hapus Catatan"):
+            button_pressed = "Hapus Catatan"
+        
+        else:
+            button_pressed = "Tampilkan Catatan"
+        
+        # Menampilkan output berdasarkan tombol yang ditekan
+        if button_pressed == "Tambah Catatan":
+            add_note()
+        elif button_pressed == "Edit Catatan":
+            edit_note()
+        elif button_pressed == "Hapus Catatan":
             delete_note()
-        else: 
+        else:
             tampilkan_catatan()
 
     def main_page():
