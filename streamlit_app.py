@@ -242,30 +242,21 @@ if authentication_status:
         st.write("Analytics content goes here")
 
     def button_coiche():
-        if 'button_pressed' not in st.session_state:
-            st.session_state.button_pressed = None
+        col1, col2, col3 = st.columns(3)
         
-        if st.button("Tambah Catatan"):
-            st.session_state.button_pressed = "Tambah Catatan"
+        # Menempatkan tombol-tombol di kolom-kolom yang telah dibuat
+        with col1:
+            if st.button("Tambah Catatan"):
+                add_note()
         
-        elif st.button("Edit Catatan"):
-            st.session_state.button_pressed = "Edit Catatan"
+        with col2:
+            if st.button("Edit Catatan"):
+                edit_note()
         
-        elif st.button("Hapus Catatan"):
-            st.session_state.button_pressed = "Hapus Catatan"
-        
-        else:
-            st.session_state.button_pressed = "Tampilkan Catatan"
-        
-        # Menampilkan output berdasarkan tombol yang ditekan
-        if st.session_state.button_pressed == "Tambah Catatan":
-            add_note()
-        elif st.session_state.button_pressed == "Edit Catatan":
-            edit_note()
-        elif st.session_state.button_pressed == "Hapus Catatan":
-            delete_note()
-        else:
-            tampilkan_catatan()
+        with col3:
+            if st.button("Hapus Catatan"):
+                delete_note()
+
 
     def main_page():
         st.title("Home Page")
