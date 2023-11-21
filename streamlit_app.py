@@ -131,7 +131,7 @@ if authentication_status:
     def sidebar_navigation():
         st.sidebar.title("Navigation")
         pages = ["Home", "Analytics"]  # Define different pages
-        choice = st.sidebar.selectbox("Go to", pages)
+        choice = st.sidebar.columns("Go to", pages)
     
         return choice
     
