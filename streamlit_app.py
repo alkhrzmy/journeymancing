@@ -185,6 +185,19 @@ if authentication_status:
     elif button_col3.button("Hapus Catatan"):
         delete_note()
 
+    if st.session_state.new_note_added:  # Jika catatan baru ditambahkan
+            st.write("Hasil Catatan:")
+            st.write(f"Foto: {st.session_state.uploaded_file}")
+            st.write(f"Detail Lokasi: {st.session_state.location_details}")
+            st.write(f"Latitude: {st.session_state.latitude}, Longitude: {st.session_state.longitude}")
+            st.write(f"Tanggal: {st.session_state.input_date}")
+            st.write(f"Jenis Ikan: {st.session_state.fish_type}")
+            st.write(f"Metode Memancing: {st.session_state.fishing_method}")
+            st.write("Info Cuaca:")
+            st.write(f"Temperatur: {st.session_state.weather_info['temperature']}")
+            st.write(f"Kondisi Cuaca: {st.session_state.weather_info['condition']}")
+            st.write(f"Kecepatan Angin: {st.session_state.weather_info['wind_speed']}")
+
     
     def main():
         main_page()
