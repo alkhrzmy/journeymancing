@@ -176,11 +176,11 @@ if authentication_status:
     def main_page():
         st.title("Halaman Utama")
         
-        if st.button("Tambah Catatan"):
+        if st.button("Tambah Catatan", key="add_button"):
             add_note()
-        elif st.button("Edit Catatan"):
+        elif st.button("Edit Catatan", key="edit_button"):
             edit_note()
-        elif st.button("Hapus Catatan"):
+        elif st.button("Hapus Catatan", key="delete_button"):
             delete_note()
 
 
