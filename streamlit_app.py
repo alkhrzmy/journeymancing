@@ -8,15 +8,16 @@ import streamlit_authenticator as stauth
 
 st.set_page_config(page_title="Journey Mancing", page_icon="🎣", layout="wide")
 
-st.header("Journey Mancing®")
 # ----- USER AUTHENTICATION
 names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
 usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
 passwords = ["admin", "data", "data", "data", "data"]
 
+hashed_passwords = stauth.Hasher(passwords).generate()
+
 credentials = {"usernames":{}}
 
-for un, name, pw in zip(usernames, names, passwords):
+for un, name, pw in zip(usernames, names, hashed_passwords):
     user_dict = {"name":name,"password":pw}
     credentials["usernames"].update({un:user_dict})
 
