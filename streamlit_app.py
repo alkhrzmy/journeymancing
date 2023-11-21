@@ -58,7 +58,7 @@ if authentication_status:
             "wind_speed": "5 m/s"
         }
 
-    return fake_weather
+        return fake_weather
     # Fungsi untuk verifikasi login
     def verify_login(username, password):
         # Ganti URL dengan URL file txt di GitHub yang berisi username dan password
