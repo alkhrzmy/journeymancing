@@ -228,6 +228,8 @@ if authentication_status:
             return "Home"
         elif st.sidebar.button("Analytics"):
             return "Analytics"
+        else:
+            return "Home"
 
     
     # Function to display analytics page
@@ -239,8 +241,19 @@ if authentication_status:
         authenticator.logout("Logout","sidebar")
         st.sidebar.title(f"Welcome {name}")
 
+    def button_coiche():
+        
+        if st.button("Tambah Catatan"):
+            add_note()
+        elif st.button("Edit Catatan"):
+            edit_note()
+        elif st.button("Hapus Catatan"):
+            delete_note()
+        else: 
+            tampilkan_catatan()
 
     def main_page():
+        st.title("Home Page")
         
         if st.button("Tambah Catatan"):
             add_note()
