@@ -130,10 +130,12 @@ if authentication_status:
         # Sidebar navigation function
     def sidebar_navigation():
         st.sidebar.title("Navigation")
-        pages = ["Home", "Analytics"]  # Define different pages
-        choice = st.sidebar.slider("Go to", 0, len(pages) - 1, 0, format_func=lambda x: pages[x])
-    
-        return pages[choice]
+        if st.sidebar.button("Home"):
+            return "Home"
+        elif st.sidebar.button("Analytics"):
+            return "Analytics"
+        else:
+            return "Home"  # Default to Home if no button is clicked
     
     # Function to display analytics page
     def analytics_page():
