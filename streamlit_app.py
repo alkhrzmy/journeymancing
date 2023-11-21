@@ -76,7 +76,7 @@ if authentication_status:
         location = st.text_input("Cari Lokasi")
         latitude, longitude = None, None  # Initialize to None
         if location:
-            coordinates = get_coordinates(location):
+            coordinates = get_coordinates(location)
             if coordinates:
                 latitude, longitude = coordinates
                 st.write("Latitude:", latitude, "Longitude:", longitude)
