@@ -96,11 +96,7 @@ if authentication_status:
             st.success("Catatan Mancing Disimpan")
 
             # Mendapatkan info cuaca
-            weather_info = get_weather_info(latitude, longitude)
-            st.subheader("Info Cuaca")
-            st.write(f"Temperatur: {weather_info['temperature']}")
-            st.write(f"Kondisi Cuaca: {weather_info['condition']}")
-            st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
+
 
     # Fungsi untuk mengedit catatan
     def edit_note():
