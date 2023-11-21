@@ -52,11 +52,11 @@ if authentication_status:
     # Replace the code here with the API call to get weather information
 
     # Example fake weather data
-    fake_weather = {
-        "temperature": "25°C",
-        "condition": "Sunny",
-        "wind_speed": "5 m/s"
-    }
+        fake_weather = {
+            "temperature": "25°C",
+            "condition": "Sunny",
+            "wind_speed": "5 m/s"
+        }
 
     return fake_weather
     # Fungsi untuk verifikasi login
