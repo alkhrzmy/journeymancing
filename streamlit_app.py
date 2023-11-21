@@ -134,15 +134,12 @@ if authentication_status:
     def main_page():
         st.title("Halaman Utama")
 
-        button_col1, button_col2, button_col3 = st.columns(3)
-        
-        if button_col1.button("Tambah Catatan"):
+        if st.button("Tambah Catatan", key="add_button"):
             add_note()
-        elif button_col2.button("Edit Catatan"):
+        elif st.button("Edit Catatan", key="edit_button"):
             edit_note()
-        elif button_col3.button("Hapus Catatan"):
+        elif st.button("Hapus Catatan", key="delete_button"):
             delete_note()
-
 
     def main():
         main_page()
