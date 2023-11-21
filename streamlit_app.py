@@ -254,13 +254,7 @@ if authentication_status:
 
     def main_page():
         st.title("Home Page")
-        
-        if st.button("Tambah Catatan"):
-            add_note()
-        elif st.button("Edit Catatan"):
-            edit_note()
-        elif st.button("Hapus Catatan"):
-            delete_note()
+        button_coiche()
 
 
     def main():
