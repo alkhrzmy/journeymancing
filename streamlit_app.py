@@ -6,9 +6,9 @@ import datetime
 
 import streamlit_authenticator as stauth
 
-st.set_page_config(page_title="Journey Mancing", page_icon="🎣", layout="wide")
+st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
-st.header("Journey Mancing®")
+st.header("Journal Mancing®")
 
 # ----- USER AUTHENTICATION
 names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
