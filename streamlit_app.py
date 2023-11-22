@@ -114,12 +114,13 @@ def add_note():
             // Tampilkan info di info window
             infowindow.setContent('<div>Clicked Location<br>Latitude: ' + clickedLat + '<br>Longitude: ' + clickedLng);
             infowindow.open(map, marker);
+
+                
+            // Simpan koordinat di elemen HTML
+            document.getElementById('lat-span').innerHTML = clickedLat;
+            document.getElementById('lon-span').innerHTML = clickedLng;
         });
-        
-    function getCoords() {
-        var lat = document.getElementById('lat-span').innerText;
-        var lon = document.getElementById('lon-span').innerText;
-        return [lat, lon];
+
     }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6JQDWAVYXN07fZAtBK-ATcBg750J68bQ&libraries=places&callback=initMap" async defer></script>
