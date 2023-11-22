@@ -23,12 +23,6 @@ def get_weather_info(latitude, longitude):
         }
 
         return fake_weather
-    
-    # Ambil nilai latitude dan longitude dari JavaScript
-    js = "getCoords();"
-    coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
-    coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
-
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     st.title("Tambah Catatan Mancing")
@@ -132,21 +126,6 @@ def add_note():
     </body>
     </html>
     """
-
-    
-    js = "google_maps_autocomplete;"
-    coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
-    coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
-    components.html(google_maps_autocomplete, height=600)
-
-    # Panggil fungsi get_coordinates() untuk mendapatkan nilai latitude dan longitude
-    coordinates = get_coordinates()
-    if coordinates:
-        lat, lon = eval(coordinates)
-        st.write(f"Latitude: {lat}, Longitude: {lon}")
-
-    # Gunakan nilai latitude dan longitude ini untuk fungsi lain di aplikasi Anda
-    # Contoh: get_weather_info(lat, lon)
 
     # Input tanggal
     input_date = st.date_input("Tanggal")
