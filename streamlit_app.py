@@ -36,10 +36,6 @@ def add_note():
 
     # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
     # HTML template for the location picker
-    google_maps_autocomplete = """
-    <!DOCTYPE html>
-    ... (Kode HTML)
-    """
     # Display the location picker
     google_maps_autocomplete = """
     <!DOCTYPE html>
@@ -148,6 +144,8 @@ def add_note():
     </body>
     </html>
     """
+
+    components.html(google_maps_autocomplete, height=400)
 
 
     # Input tanggal
