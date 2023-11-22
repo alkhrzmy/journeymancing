@@ -24,24 +24,10 @@ def get_weather_info(latitude, longitude):
 
         return fake_weather
     
-def get_coordinates():
-    html_content = """
-    <script>
-    function getCoords() {
-        var lat = document.getElementById('lat-span').innerText;
-        var lon = document.getElementById('lon-span').innerText;
-        return [lat, lon];
-    }
-    </script>
-    """
-    st.components.v1.html(html_content, height=0)
-
     # Ambil nilai latitude dan longitude dari JavaScript
     js = "getCoords();"
     coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
     coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
-
-    return coordinates.value
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
@@ -136,8 +122,9 @@ def add_note():
             infowindow.open(map, marker);
     
             // Simpan koordinat di elemen HTML
-            document.getElementById('lat-span').innerHTML = clickedLat;
-            document.getElementById('lon-span').innerHTML = clickedLng;
+            document.getElementById('lat').innerHTML = clickedLat;
+            document.getElementById('lon').innerHTML = clickedLng;
+            return [lat, lon];
         });
     }
     </script>
@@ -145,6 +132,11 @@ def add_note():
     </body>
     </html>
     """
+
+    
+    js = "google_maps_autocomplete;"
+    coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
+    coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
     components.html(google_maps_autocomplete, height=600)
 
     # Panggil fungsi get_coordinates() untuk mendapatkan nilai latitude dan longitude
