@@ -251,7 +251,8 @@ def login():
     authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
     
     name, authentication_status, username = authenticator.login("Login", "main")
-
+    if authentication_status == False:
+        return authentication_status
     if authentication_status == False:
         return st.error("Username/password salah")
     if authentication_status == None:
@@ -259,7 +260,6 @@ def login():
 
 login()
 if authentication_status:
-    
     def main_page():
         st.title("Home Page")
         button_coiche()
