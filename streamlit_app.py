@@ -146,19 +146,18 @@ def add_note():
 
     # Tombol untuk menyimpan catatan memancing
     if st.button("Simpan Catatan"):
-        if lat-span is not None and lon-span is not None:
-            note_data = [combined_datetime, fish_type, fishing_method, location_details]
+        note_data = [combined_datetime, fish_type, fishing_method, location_details]
 
-            # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
-            st.success("Catatan Mancing Disimpan")
+        # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
+        st.success("Catatan Mancing Disimpan")
 
-            # Mendapatkan info cuaca jika koordinat telah didapat
-            if lat-span and lon-span:
-                weather_info = get_weather_info(lat-span, lon-span)
-                st.subheader("Info Cuaca")
-                st.write(f"Temperatur: {weather_info['temperature']}")
-                st.write(f"Kondisi Cuaca: {weather_info['condition']}")
-                st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
+        # Mendapatkan info cuaca jika koordinat telah didapat
+        if lat-span and lon-span:
+            weather_info = get_weather_info(lat-span, lon-span)
+            st.subheader("Info Cuaca")
+            st.write(f"Temperatur: {weather_info['temperature']}")
+            st.write(f"Kondisi Cuaca: {weather_info['condition']}")
+            st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
         else:
             st.warning("Harap cari lokasi yang valid untuk mendapatkan informasi cuaca")
 
