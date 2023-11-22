@@ -9,36 +9,7 @@ import streamlit_authenticator as stauth
 
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
-
-st.header("Journal Mancing®")
-
-
-# ----- USER AUTHENTICATION
-names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
-usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
-passwords = ["admin", "data", "data", "data", "data"]
-
-hashed_passwords = stauth.Hasher(passwords).generate()
-
-credentials = {"usernames":{}}
-
-for un, name, pw in zip(usernames, names, hashed_passwords):
-    user_dict = {"name":name,"password":pw}
-    credentials["usernames"].update({un:user_dict})
-
-authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
-
-name, authentication_status, username = authenticator.login("Login", "main")
-
-if authentication_status == False:
-    st.error("Username/password salah")
-if authentication_status == None:
-    st.warning("Masukan Username dan Password")
-
-if authentication_status:
-
-    # Function to get weather info from a suitable weather API using latitude and longitude
+ # Function to get weather info from a suitable weather API using latitude and longitude
     def get_weather_info(latitude, longitude):
     # Implement logic to fetch weather info from a weather API using latitude and longitude
     # Use an appropriate weather API (e.g., OpenWeatherMap, WeatherAPI, etc.)
@@ -212,11 +183,11 @@ if authentication_status:
     
 
     # Fungsi untuk mengedit catatan
-    def edit_note(index, updated_note):
+    def edit_note():
         st.write("Journal")
         
     # Fungsi untuk menghapus catatan
-    def delete_note(index):
+    def delete_note():
         st.write("Journal")
 
 
@@ -253,7 +224,37 @@ if authentication_status:
         with button_col3:
             delete_note()
 
+st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
+st.header("Journal Mancing®")
+
+
+# ----- USER AUTHENTICATION
+def login():
+    names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
+    usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
+    passwords = ["admin", "data", "data", "data", "data"]
+    
+    hashed_passwords = stauth.Hasher(passwords).generate()
+    
+    credentials = {"usernames":{}}
+    
+    for un, name, pw in zip(usernames, names, hashed_passwords):
+        user_dict = {"name":name,"password":pw}
+        credentials["usernames"].update({un:user_dict})
+    
+    authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
+    
+    name, authentication_status, username = authenticator.login("Login", "main")
+
+    if authentication_status == False:
+        return st.error("Username/password salah")
+    if authentication_status == None:
+        return st.warning("Masukan Username dan Password")
+
+login()
+if authentication_status:
+    
     def main_page():
         st.title("Home Page")
         button_coiche()
@@ -265,7 +266,6 @@ if authentication_status:
             main_page()
         elif choice == "Analytics":
             analytics_page()
-
+            
     if __name__ == "__main__":
         main()
-    
