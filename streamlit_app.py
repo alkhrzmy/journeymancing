@@ -143,7 +143,7 @@ def add_note():
 
     # Tombol untuk menyimpan catatan memancing
     if st.button("Simpan Catatan"):
-        if latitude is not None and longitude is not None:
+        if clickedLat is not None and clickedLng is not None:
             note_data = [combined_datetime, fish_type, fishing_method, location_details]
 
             # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
@@ -151,7 +151,7 @@ def add_note():
 
             # Mendapatkan info cuaca jika koordinat telah didapat
             if latitude and longitude:
-                weather_info = get_weather_info(latitude, longitude)
+                weather_info = get_weather_info(clickedLat, clickedLng)
                 st.subheader("Info Cuaca")
                 st.write(f"Temperatur: {weather_info['temperature']}")
                 st.write(f"Kondisi Cuaca: {weather_info['condition']}")
