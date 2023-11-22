@@ -248,10 +248,10 @@ def login():
         user_dict = {"name":name,"password":pw}
         credentials["usernames"].update({un:user_dict})
     
-    authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
+    authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
     
     name, authentication_status, username = authenticator.login("Login", "main")
-    if authentication_status == False:
+    if authentication_status == True:
         return authentication_status
     if authentication_status == False:
         return st.error("Username/password salah")
@@ -259,7 +259,7 @@ def login():
         return st.warning("Masukan Username dan Password")
 
 login()
-if authentication_status:
+if authentication_status == True:
     def main_page():
         st.title("Home Page")
         button_coiche()
