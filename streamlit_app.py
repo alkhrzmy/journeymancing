@@ -23,6 +23,9 @@ def get_weather_info(latitude, longitude):
         }
 
         return fake_weather
+
+def get_clicked_coordinates():
+    return components.html('<script>getClickedCoordinates();</script>', height=0)
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     st.title("Tambah Catatan Mancing")
@@ -120,7 +123,10 @@ def add_note():
             document.getElementById('lat-span').innerHTML = clickedLat;
             document.getElementById('lon-span').innerHTML = clickedLng;
         });
-
+    }
+        // Fungsi untuk mendapatkan nilai latitude dan longitude yang dipilih
+    function getClickedCoordinates() {
+        return [clickedLat, clickedLng];
     }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6JQDWAVYXN07fZAtBK-ATcBg750J68bQ&libraries=places&callback=initMap" async defer></script>
@@ -129,6 +135,11 @@ def add_note():
     """
     
     components.html(google_maps_autocomplete, height=600)
+
+    lat_lon = get_clicked_coordinates()
+    if lat_lon:
+        lat, lon = map(float, lat_lon.split(','))
+        st.write(f"Latitude: {lat}, Longitude: {lon}")
         
     # Input tanggal
     input_date = st.date_input("Tanggal")
