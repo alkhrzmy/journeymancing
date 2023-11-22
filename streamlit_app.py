@@ -68,9 +68,13 @@ def add_note():
                 padding: 0 11px 0 13px;
                 text-overflow: ellipsis;
                 width: 50%;
+                color: #ffffff;
             }
             #searchMapInput:focus {
                 border-color: #4d90fe;
+            }
+            #geoData {
+                color: #ffffff; /* Ubah warna font menjadi putih */
             }
         </style>
     </head>
