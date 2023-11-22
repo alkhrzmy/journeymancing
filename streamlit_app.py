@@ -127,21 +127,6 @@ def add_note():
 
     components.html(google_maps_autocomplete, height=600)
 
-
-    # Mendapatkan nilai latitude dan longitude dari elemen HTML dengan menggunakan JavaScript
-    # Membuat komponen HTML menggunakan script JavaScript
-    result = components.html('<div id="coordinates"></div>', height=0)
-    result.script("document.getElementById('coordinates').innerText = JSON.stringify(" + google_maps_autocomplete + ")")
-    return result
-
-    
-    coordinates = get_coordinates()
-    if coordinates:
-        lat_lon_values = coordinates.value
-        if lat_lon_values:
-            lat, lon = eval(lat_lon_values)
-            st.write(f"Latitude: {lat}, Longitude: {lon}")
-        
     # Input tanggal
     input_date = st.date_input("Tanggal")
 
