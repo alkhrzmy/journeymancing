@@ -116,8 +116,8 @@ def add_note():
             infowindow.open(map, marker);
     
             // Simpan koordinat di elemen HTML
-            document.getElementById('lat').innerHTML = clickedLat;
-            document.getElementById('lon').innerHTML = clickedLng;
+            document.getElementById('lat-span').innerHTML = clickedLat;
+            document.getElementById('lon-span').innerHTML = clickedLng;
             return [lat, lon];
         });
     }
@@ -127,7 +127,6 @@ def add_note():
     </html>
     """
 
-    
     components.html(google_maps_autocomplete, height=600)
 
     # Input tanggal
