@@ -118,7 +118,7 @@ def add_note():
             // Simpan koordinat di elemen HTML
             document.getElementById('lat-span').innerHTML = clickedLat;
             document.getElementById('lon-span').innerHTML = clickedLng;
-            return [lat, lon];
+            return [lat-span, lon-span];
         });
     }
     </script>
@@ -146,15 +146,15 @@ def add_note():
 
     # Tombol untuk menyimpan catatan memancing
     if st.button("Simpan Catatan"):
-        if lat is not None and lon is not None:
+        if lat-span is not None and lon-span is not None:
             note_data = [combined_datetime, fish_type, fishing_method, location_details]
 
             # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
             st.success("Catatan Mancing Disimpan")
 
             # Mendapatkan info cuaca jika koordinat telah didapat
-            if latitude and longitude:
-                weather_info = get_weather_info(lat, lon)
+            if lat-span and lon-span:
+                weather_info = get_weather_info(lat-span, lon-span)
                 st.subheader("Info Cuaca")
                 st.write(f"Temperatur: {weather_info['temperature']}")
                 st.write(f"Kondisi Cuaca: {weather_info['condition']}")
