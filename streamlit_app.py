@@ -23,7 +23,21 @@ def get_weather_info(latitude, longitude):
         }
 
         return fake_weather
-        
+    
+def get_coordinates():
+    # Mendapatkan nilai latitude dan longitude dari elemen HTML dengan menggunakan JavaScript
+    js_script = """
+    const lat = document.getElementById('lat-span').textContent;
+    const lon = document.getElementById('lon-span').textContent;
+    [lat, lon];
+    """
+    # Membuat komponen HTML menggunakan script JavaScript
+    result = components.html('<div id="coordinates"></div>', height=0)
+    result.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js_script + ")")
+    return result
+
+
+
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     st.title("Tambah Catatan Mancing")
@@ -125,7 +139,13 @@ def add_note():
 
     components.html(google_maps_autocomplete, height=600)
 
-
+    coordinates = get_coordinates()
+    if coordinates:
+        lat_lon_values = coordinates.value
+        if lat_lon_values:
+            lat, lon = eval(lat_lon_values)
+            st.write(f"Latitude: {lat}, Longitude: {lon}")
+        
     # Input tanggal
     input_date = st.date_input("Tanggal")
 
