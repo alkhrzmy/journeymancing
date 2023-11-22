@@ -114,11 +114,6 @@ def add_note():
             // Tampilkan info di info window
             infowindow.setContent('<div>Clicked Location<br>Latitude: ' + clickedLat + '<br>Longitude: ' + clickedLng);
             infowindow.open(map, marker);
-    
-            // Simpan koordinat di elemen HTML
-            document.getElementById('lat-span').innerHTML = clickedLat;
-            document.getElementById('lon-span').innerHTML = clickedLng;
-            return [lat, lon];
         });
         
     function getCoords() {
