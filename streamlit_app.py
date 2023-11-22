@@ -235,31 +235,28 @@ st.header("Journal Mancing®")
 
 
 # ----- USER AUTHENTICATION
-def login():
-    names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
-    usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
-    passwords = ["admin", "data", "data", "data", "data"]
-    
-    hashed_passwords = stauth.Hasher(passwords).generate()
-    
-    credentials = {"usernames":{}}
-    
-    for un, name, pw in zip(usernames, names, hashed_passwords):
-        user_dict = {"name":name,"password":pw}
-        credentials["usernames"].update({un:user_dict})
-    
-    authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
-    
-    name, authentication_status, username = authenticator.login("Login", "main")
-    if authentication_status == True:
-        return authentication_status
-    if authentication_status == False:
-        return st.error("Username/password salah")
-    if authentication_status == None:
-        return st.warning("Masukan Username dan Password")
+names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
+usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
+passwords = ["admin", "data", "data", "data", "data"]
 
-login()
-if authentication_status == True:
+hashed_passwords = stauth.Hasher(passwords).generate()
+
+credentials = {"usernames":{}}
+
+for un, name, pw in zip(usernames, names, hashed_passwords):
+    user_dict = {"name":name,"password":pw}
+    credentials["usernames"].update({un:user_dict})
+
+authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
+
+name, authentication_status, username = authenticator.login("Login", "main")
+
+if authentication_status == False:
+    st.error("Username/password salah")
+if authentication_status == None:
+    st.warning("Masukan Username dan Password")
+
+if authentication_status:
     def main_page():
         st.title("Home Page")
         button_coiche()
