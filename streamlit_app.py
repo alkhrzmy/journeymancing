@@ -132,14 +132,6 @@ def add_note():
     </html>
     """
     
-    js = "getCoords();"
-    coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
-    coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
-    if coordinates:
-        lat, lon = eval(coordinates)
-
-    
-    
     components.html(google_maps_autocomplete, height=600)
         
     # Input tanggal
