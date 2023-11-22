@@ -145,7 +145,7 @@ def add_note():
     </html>
     """
 
-    components.html(google_maps_autocomplete, height=400)
+    components.html(google_maps_autocomplete, height=600)
 
 
     # Input tanggal
