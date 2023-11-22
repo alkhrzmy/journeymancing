@@ -118,17 +118,28 @@ def add_note():
             // Simpan koordinat di elemen HTML
             document.getElementById('lat-span').innerHTML = clickedLat;
             document.getElementById('lon-span').innerHTML = clickedLng;
-            return [lat-span, lon-span];
+            return [lat, lon];
         });
+        
+    function getCoords() {
+        var lat = document.getElementById('lat-span').innerText;
+        var lon = document.getElementById('lon-span').innerText;
+        return [lat, lon];
     }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6JQDWAVYXN07fZAtBK-ATcBg750J68bQ&libraries=places&callback=initMap" async defer></script>
     </body>
     </html>
     """
-
+    
     components.html(google_maps_autocomplete, height=600)
-
+    
+    js = "getCoords();"
+    coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
+    coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
+    if coordinates:
+        lat, lon = eval(coordinates)
+        
     # Input tanggal
     input_date = st.date_input("Tanggal")
 
@@ -152,8 +163,8 @@ def add_note():
         st.success("Catatan Mancing Disimpan")
 
         # Mendapatkan info cuaca jika koordinat telah didapat
-        if lat-span and lon-span:
-            weather_info = get_weather_info(lat-span, lon-span)
+        if lat and lon:
+            weather_info = get_weather_info(lat, lon)
             st.subheader("Info Cuaca")
             st.write(f"Temperatur: {weather_info['temperature']}")
             st.write(f"Kondisi Cuaca: {weather_info['condition']}")
