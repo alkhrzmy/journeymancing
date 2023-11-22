@@ -24,7 +24,24 @@ def get_weather_info(latitude, longitude):
 
         return fake_weather
     
+def get_coordinates():
+    html_content = """
+    <script>
+    function getCoords() {
+        var lat = document.getElementById('lat-span').innerText;
+        var lon = document.getElementById('lon-span').innerText;
+        return [lat, lon];
+    }
+    </script>
+    """
+    st.components.v1.html(html_content, height=0)
 
+    # Ambil nilai latitude dan longitude dari JavaScript
+    js = "getCoords();"
+    coordinates = st.components.v1.html("<div id='coordinates'></div>", height=0)
+    coordinates.script("document.getElementById('coordinates').innerText = JSON.stringify(" + js + ")")
+
+    return coordinates.value
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
@@ -128,8 +145,16 @@ def add_note():
     </body>
     </html>
     """
-
     components.html(google_maps_autocomplete, height=600)
+
+    # Panggil fungsi get_coordinates() untuk mendapatkan nilai latitude dan longitude
+    coordinates = get_coordinates()
+    if coordinates:
+        lat, lon = eval(coordinates)
+        st.write(f"Latitude: {lat}, Longitude: {lon}")
+
+    # Gunakan nilai latitude dan longitude ini untuk fungsi lain di aplikasi Anda
+    # Contoh: get_weather_info(lat, lon)
 
     # Input tanggal
     input_date = st.date_input("Tanggal")
@@ -148,7 +173,7 @@ def add_note():
 
     # Tombol untuk menyimpan catatan memancing
     if st.button("Simpan Catatan"):
-        if clickedLat is not None and clickedLng is not None:
+        if lat is not None and lon is not None:
             note_data = [combined_datetime, fish_type, fishing_method, location_details]
 
             # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
@@ -156,7 +181,7 @@ def add_note():
 
             # Mendapatkan info cuaca jika koordinat telah didapat
             if latitude and longitude:
-                weather_info = get_weather_info(clickedLat, clickedLng)
+                weather_info = get_weather_info(lat, lon)
                 st.subheader("Info Cuaca")
                 st.write(f"Temperatur: {weather_info['temperature']}")
                 st.write(f"Kondisi Cuaca: {weather_info['condition']}")
