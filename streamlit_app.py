@@ -127,6 +127,9 @@ def add_note():
     </html>
     """
 
+    
+    components.html(google_maps_autocomplete, height=600)
+
     # Input tanggal
     input_date = st.date_input("Tanggal")
 
