@@ -253,6 +253,8 @@ if authentication_status:
 
 
     def main():
+        authenticator.logout("Logout","sidebar")
+        st.sidebar.title(f"Welcome {name}")
         choice = sidebar_navigation()
         if choice == "Home":
             main_page()
