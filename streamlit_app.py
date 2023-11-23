@@ -193,7 +193,7 @@ current_page = "Home"  # Inisialisasi status halaman
 
 
 def sidebar_navigation():
-    st.sidebar.title("Wellcome bro")
+    #st.sidebar.title("Wellcome bro")
     global current_page  # Gunakan variabel global untuk menyimpan status halaman terkini
     if st.sidebar.button("Home"):
         current_page = "Home"
