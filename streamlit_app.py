@@ -279,8 +279,7 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 conn1 = sql.connect("file:auth.db?mode=rwc", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
-creddata2 = conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT,uploaded_file_name VARCHAR(255),
-            uploaded_file_data BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+creddata2 = conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT,uploaded_file_name VARCHAR(255), uploaded_file_data BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
 
 names = []
 usernames = []
