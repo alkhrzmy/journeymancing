@@ -196,8 +196,12 @@ def add_note():
     if st.button("Simpan Catatan"):
         new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
                    "fishing_method": fishing_method, "location_details": location_details}
-        # Append the new row to the DataFrame
-        df = df.append(new_row, ignore_index=True)
+        
+        # Create a temporary DataFrame with the new row
+        temp_df = pd.DataFrame(new_row, index=[0])
+        
+        # Concatenate the temporary DataFrame with the existing df
+        df = pd.concat([df, temp_df], ignore_index=True)
         
         st.success("Catatan Mancing Disimpan")# Tombol untuk menyimpan catatan memancing
         
