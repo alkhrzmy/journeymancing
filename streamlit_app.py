@@ -3,6 +3,7 @@ import git
 import csv
 import requests
 import datetime
+import pandas as pd
 from PIL import Image
 
 import streamlit_authenticator as stauth
