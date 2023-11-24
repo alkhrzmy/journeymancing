@@ -39,7 +39,7 @@ def add_note():
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
-    uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
+    uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'], key="?1")
 
     # Memasukkan detail lokasi
     location_details = st.text_input("Detail Lokasi")
