@@ -197,6 +197,7 @@ def add_note():
         new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
                    "fishing_method": fishing_method, "location_details": location_details}
         df = df.append(new_row)
+        df = pd.DataFrame(df)
         st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
         
 # Fungsi untuk mengecek catatan
