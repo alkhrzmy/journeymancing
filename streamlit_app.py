@@ -32,7 +32,6 @@ def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
     
 df = ["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"]
-df = pd.DataFrame(df)
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
