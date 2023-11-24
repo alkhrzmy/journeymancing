@@ -200,24 +200,25 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     if st.button("Simpan Catatan"):
         with conn1:
             conn1.execute(
-                "INSERT INTO catatan(location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?)",
-                (location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+                "INSERT INTO catatan(uploaded_file, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
+                (uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
             )
-            st.text("Database Updated")
+            st.text("Catatan baru tersimpan!")
 
 
 # Fungsi untuk mengecek catatan
 def check_note(conn1):
-    table_data = conn1.execute("select location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
+    table_data = conn1.execute("select uploaded_file, location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
     if table_data:
         table_data2 = list(zip(*table_data))
         st.table(
             {
-                "location_details": (table_data2)[0],
-                "datetime": table_data2[1],
-                "fish_type": table_data2[2],
-                "bait_used": table_data2[3],
-                "fishing_method": table_data2[4],
+                "uploaded_file": (table_data2)[0],
+                "location_details": (table_data2)[1],
+                "datetime": table_data2[2],
+                "fish_type": table_data2[3],
+                "bait_used": table_data2[4],
+                "fishing_method": table_data2[5],
             }
         )
     else:
