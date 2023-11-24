@@ -202,6 +202,7 @@ def add_note():
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
+    st.write(df)
     
 # Fungsi untuk mengedit catatan
 def edit_note():
