@@ -12,10 +12,7 @@ import streamlit.components.v1 as components
 import authlib
 import sqlite3 as sql
 
-df = pd.DataFrame(
-    [
-   ]
-)
+df = pd.DataFrame([])
 
 edited_df = st.data_editor(df)
 
