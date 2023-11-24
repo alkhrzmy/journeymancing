@@ -204,8 +204,8 @@ def add_note(conn1, init_uploaded_file, init_location_details, init_combined_dat
 
 
 # Fungsi untuk mengecek catatan
-def check_note(conn):
-    table_data = conn.execute("select location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
+def check_note(conn1):
+    table_data = conn1.execute("select location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
     if table_data:
         table_data2 = list(zip(*table_data))
         st.table(
