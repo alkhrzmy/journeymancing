@@ -189,11 +189,27 @@ def add_note():
     fish_type = st.text_input("Jenis Ikan yang Ditangkap")
 
     # Memasukkan metode memancing
+    bait_used = st.text_input("Jenis Umpan")
+
+    # Memasukkan metode memancing
     fishing_method = st.text_input("Metode Memancing")
+
+    if st.button('Simpan'):
+        data = {
+            'Foto': [uploaded_file]
+            'Lokasi': [location_details],
+            'Jenis Ikan': [fish_type],
+            'Umpan': [bait_used],
+            'Metode': [fishing_method]
+            'Tanggal & waktu': [combined_datetime]
+        }
+
+    df = pd.DataFrame(data)
         
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
+    edited_df = st.data_editor(df)
     
 # Fungsi untuk mengedit catatan
 def edit_note():
