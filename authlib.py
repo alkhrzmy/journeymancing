@@ -30,28 +30,28 @@ def auth(sidebar=True):
 
 
 def _list_users(conn):
-    table_data = conn.execute("select username,password,su from users").fetchall()
+    table_data = conn.execute("select username,password,names from users").fetchall()
     if table_data:
         table_data2 = list(zip(*table_data))
         st.table(
             {
                 "Username": (table_data2)[0],
                 "Password": table_data2[1],
-                "Superuser?": table_data2[2],
+                "Name": table_data2[2],
             }
         )
     else:
         st.write("No entries in authentication database")
 
 
-def _create_users(conn, init_user="", init_pass="", init_super=False):
+def _create_users(conn, init_user="", init_pass="", init_super=""):
     user = st.text_input("Enter Username", value=init_user)
     pass_ = st.text_input("Enter Password (required)", value=init_pass)
-    super_ = st.checkbox("Is this a superuser?", value=init_super)
+    super_ = st.text_input("Enter Name", value=init_super)
     if st.button("Update Database") and user and pass_:
         with conn:
             conn.execute(
-                "INSERT INTO USERS(username, password, su) VALUES(?,?,?)",
+                "INSERT INTO USERS(username, password, names) VALUES(?,?,?)",
                 (user, pass_, super_),
             )
             st.text("Database Updated")
@@ -63,7 +63,7 @@ def _edit_users(conn):
     edit_user = st.selectbox("Select user", options=userlist)
     if edit_user:
         user_data = conn.execute(
-            "select username,password,su from users where username = ?", (edit_user,)
+            "select username,password,names from users where username = ?", (edit_user,)
         ).fetchone()
         _create_users(
             conn=conn,
@@ -87,7 +87,7 @@ def _delete_users(conn):
 def _superuser_mode():
     with sql.connect("file:auth.db?mode=rwc", uri=True) as conn:
         conn.execute(
-            "create table if not exists users (id INTEGER PRIMARY KEY, username UNIQUE ON CONFLICT REPLACE, password, su)"
+            "create table if not exists users (id INTEGER PRIMARY KEY, username UNIQUE ON CONFLICT REPLACE, password, names)"
         )
         mode = st.radio("Select mode", ("View", "Create", "Edit", "Delete"))
         {
