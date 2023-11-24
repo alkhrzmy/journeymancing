@@ -30,19 +30,10 @@ def get_weather_info(latitude, longitude):
 
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
-    
-data = pd.DataFrame(columns=["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"])
 
-st.dataframe(data) 
-
-# persist state of dataframe
-# session_state = SessionState.get(df=data)
-if 'df' not in st.session_state:
-    st.session_state.df = data
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
-    global df
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
@@ -199,18 +190,10 @@ def add_note():
 
     # Memasukkan metode memancing
     fishing_method = st.text_input("Metode Memancing")
-
-    if st.button("Simpan Catatan"):
-        new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type, "fishing_method": fishing_method, "location_details": location_details}
-        st.session_state.df = st.session_state.df.append(new_row, ignore_index=True)
-        st.success("Catatan Mancing Disimpan")
-        st.text("Updated dataframe")
-        st.dataframe(st.session_state.df)
         
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
-    edited_df = st.data_editor(df)
     
 # Fungsi untuk mengedit catatan
 def edit_note():
@@ -219,10 +202,6 @@ def edit_note():
 
 # Fungsi untuk menghapus catatan
 def delete_note():
-    st.write("Journal")
-
-
-def tampilkan_catatan():
     st.write("Journal")
 
 
