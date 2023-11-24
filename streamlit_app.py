@@ -210,7 +210,7 @@ def add_note():
             'Metode': [fishing_method],
             'Tanggal & waktu': [combined_datetime],
         }
-        df = pd.DataFrame(data)
+        df = df.append(data, ignore_index=True)
         
 # Fungsi untuk mengecek catatan
 def check_note():
