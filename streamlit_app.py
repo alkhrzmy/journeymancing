@@ -206,6 +206,7 @@ def add_note():
         }
         df = pd.DataFrame(data)
         st.success("Catatan disimpan")
+        return df
         
 # Fungsi untuk mengecek catatan
 def check_note():
