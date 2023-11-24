@@ -39,7 +39,7 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     # Memasukkan foto
     uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
     
-    if init_uploaded_file is not None:
+    if init_uploaded_file_ is not None:
         uploaded_file = init_uploaded_file_
         
     # Memasukkan detail lokasi
