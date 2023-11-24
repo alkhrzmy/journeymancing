@@ -206,10 +206,6 @@ def add_note():
         st.success("Catatan Mancing Disimpan")
         st.text("Updated dataframe")
         st.dataframe(st.session_state.df)
-
-# still empty as state is not persisted
-st.text("Original dataframe")
-st.dataframe(data)
         
 # Fungsi untuk mengecek catatan
 def check_note():
