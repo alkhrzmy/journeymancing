@@ -247,17 +247,9 @@ st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide"
 
 st.header("Journal Mancing®")
 
-st.markdown(
-    """
-    <style>
-    body {
-        background-image: url('https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg');
-        background-size: cover;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+image = Image.open('https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg')
+
+st.image(image, caption='Sunrise by the mountains')
 
 # ----- SQL AUTH
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
