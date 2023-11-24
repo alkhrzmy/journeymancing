@@ -31,7 +31,7 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
     
-df = pd.DataFrame(columns=["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"])
+data = pd.DataFrame(columns=["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"])
 
 st.dataframe(data) 
 
@@ -201,7 +201,7 @@ def add_note():
     fishing_method = st.text_input("Metode Memancing")
 
     if st.button("Simpan Catatan"):
-
+        new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type, "fishing_method": fishing_method, "location_details": location_details}
         st.session_state.df = st.session_state.df.append(new_row, ignore_index=True)
         st.success("Catatan Mancing Disimpan")
         st.text("Updated dataframe")
