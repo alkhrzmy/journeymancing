@@ -204,7 +204,7 @@ def add_note(conn1, init_uploaded_file="", init_location_details="", init_combin
 
 
 # Fungsi untuk mengecek catatan
-def check_note():
+def check_note(conn1):
     table_data = conn1.execute("select location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
     if table_data:
         table_data2 = list(zip(*table_data))
@@ -253,9 +253,9 @@ def button_coiche():
     button_col1, button_col2, button_col3, button_col4 = st.tabs(["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
 
     with button_col1:
-        check_note()
+        check_note(conn1)
     with button_col2:
-        add_note()
+        add_note(conn1)
     with button_col3:
         edit_note()
     with button_col4:
