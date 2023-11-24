@@ -31,7 +31,7 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
-df = pd.DataFrame({'Foto',
+df = pd.DataFrame(columns = {'Foto',
         'Lokasi',
         'Jenis Ikan',
         'Umpan',
