@@ -137,12 +137,41 @@ def add_note():
     </html>
     """
     
+    # Display the HTML content with the map
     components.html(google_maps_autocomplete, height=600)
 
+    # Define global variables to store the clicked coordinates
+    clicked_lat = None
+    clicked_lng = None
+    
+        # Update the getClickedCoordinates() function to store clicked values
+    def get_clicked_coordinates():
+        return clicked_lat, clicked_lng
+    
+    # Function to extract clicked coordinates from the map
+    def on_click(clicked_latlng):
+        global clicked_lat, clicked_lng
+        clicked_lat = clicked_latlng.lat
+        clicked_lng = clicked_latlng.lng
+    
+    # Display the coordinates when available
     lat_lon = get_clicked_coordinates()
-    if lat_lon:
-        lat, lon = map(float, lat_lon.split(','))
+    if lat_lon[0] is not None and lat_lon[1] is not None:
+        lat, lon = lat_lon
         st.write(f"Latitude: {lat}, Longitude: {lon}")
+    
+        # Execute JavaScript to pass the clicked coordinates to Python
+    js_code = """
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = document.getElementById('map');
+            map.addEventListener('click', function(event) {
+                google.colab.kernel.invokeFunction('notebook.add_coordinates', [event.latLng.lat(), event.latLng.lng()], {});
+                });
+            });
+    </script>
+    """
+    components.html(js_code)
         
     # Input tanggal
     input_date = st.date_input("Tanggal")
