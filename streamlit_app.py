@@ -197,14 +197,6 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     # Memasukkan metode memancing
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
 
-    if st.button("Simpan Catatan"):
-        with conn1:
-            conn1.execute(
-                "INSERT INTO catatan(uploaded_file_name, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
-                (uploaded_file.name, sqlite3.Binary(uploaded_file.read(), uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),)
-
-
-
 # Fungsi untuk mengecek catatan
 def check_note(conn1):
     table_data = conn1.execute("select uploaded_file_name, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
