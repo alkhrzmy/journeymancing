@@ -196,12 +196,12 @@ def add_note():
 
     if st.button('Simpan'):
         data = {
-            'Foto': [uploaded_file]
+            'Foto': [uploaded_file],
             'Lokasi': [location_details],
             'Jenis Ikan': [fish_type],
             'Umpan': [bait_used],
-            'Metode': [fishing_method]
-            'Tanggal & waktu': [combined_datetime]
+            'Metode': [fishing_method],
+            'Tanggal & waktu': [combined_datetime],
         }
 
     df = pd.DataFrame(data)
