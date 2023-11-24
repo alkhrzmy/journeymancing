@@ -32,6 +32,7 @@ def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
     
 df = ["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"]
+df = pd.DataFrame(df)
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
@@ -197,13 +198,13 @@ def add_note():
         new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
                    "fishing_method": fishing_method, "location_details": location_details}
         df = df.append(new_row)
-        df = pd.DataFrame(df)
+        
         st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
         
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
-    st.write(df)
+    edited_df = st.data_editor(df)
     
 # Fungsi untuk mengedit catatan
 def edit_note():
