@@ -31,6 +31,13 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
+data = {'Foto',
+        'Lokasi',
+        'Jenis Ikan',
+        'Umpan',
+        'Metode',
+        'Tanggal & waktu',
+       }
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
