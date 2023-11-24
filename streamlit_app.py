@@ -31,6 +31,8 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
+df = []
+
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     st.title("Tambah Catatan Mancing")
@@ -203,10 +205,12 @@ def add_note():
             'Tanggal & waktu': [combined_datetime],
         }
         df = pd.DataFrame(data)
+        st.success("Catatan disimpan")
         
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
+    st.data_editor(df)
     
 # Fungsi untuk mengedit catatan
 def edit_note():
@@ -220,7 +224,6 @@ def delete_note():
 
 # Sidebar navigation function
 current_page = "Home"  # Inisialisasi status halaman
-
 
 def sidebar_navigation():
     #st.sidebar.title("Wellcome bro")
@@ -237,7 +240,6 @@ def analytics_page():
     st.title("Analytics Page")
     # Add your analytics content here
     st.write("Analytics content goes here")
-
 
 def button_coiche():
     button_col1, button_col2, button_col3, button_col4 = st.tabs(["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
