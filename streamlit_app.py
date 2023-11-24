@@ -33,6 +33,13 @@ def get_clicked_coordinates():
     
 df = pd.DataFrame(columns=["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"])
 
+st.dataframe(data) 
+
+# persist state of dataframe
+# session_state = SessionState.get(df=data)
+if 'df' not in st.session_state:
+    st.session_state.df = data
+
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     global df
@@ -194,11 +201,15 @@ def add_note():
     fishing_method = st.text_input("Metode Memancing")
 
     if st.button("Simpan Catatan"):
-        new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
-                   "fishing_method": fishing_method, "location_details": location_details}
-        # Append the new row to the DataFrame
-        df = df.append(new_row, ignore_index=True)
-        st.success("Catatan Mancing Disimpan")# Tombol untuk menyimpan catatan memancing
+
+        st.session_state.df = st.session_state.df.append(new_row, ignore_index=True)
+        st.success("Catatan Mancing Disimpan")
+        st.text("Updated dataframe")
+        st.dataframe(st.session_state.df)
+
+# still empty as state is not persisted
+st.text("Original dataframe")
+st.dataframe(data)
         
 # Fungsi untuk mengecek catatan
 def check_note():
