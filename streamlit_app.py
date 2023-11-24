@@ -195,7 +195,10 @@ def add_note():
         # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
         st.success("Catatan Mancing Disimpan")
 
-
+# Fungsi untuk mengecek catatan
+def check_note():
+    st.write("Catatanmu")
+    
 # Fungsi untuk mengedit catatan
 def edit_note():
     st.write("Journal")
