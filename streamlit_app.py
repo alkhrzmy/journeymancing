@@ -37,8 +37,11 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
-    uploaded_file_ = st.file_uploader("Unggah Foto", type=['jpg', 'png'], value=init_uploaded_file_)
-
+    uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
+    
+    if init_uploaded_file is not None:
+        uploaded_file = init_uploaded_file
+        
     # Memasukkan detail lokasi
     location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
 
