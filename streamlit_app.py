@@ -8,6 +8,9 @@ from PIL import Image
 import streamlit_authenticator as stauth
 
 import streamlit.components.v1 as components
+# import for sql authentication
+import auth
+import sqlite3 as sql
 
 # Function to get weather info from a suitable weather API using latitude and longitude
 def get_weather_info(latitude, longitude):
@@ -224,18 +227,25 @@ st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide"
 st.header("Journal Mancing®")
 
 
-# ----- USER AUTHENTICATION
-names = ["admin", "Feryadi Yulius","Gymnastiar Al Khoarizmy", "Natasya Ega Lina Marbun", "Khusnun Nisa"]
-usernames = ["admin", "feryadi", "jimnas", "natee", "khusnun"]
-passwords = ["admin", "data", "data", "data", "data"]
-
-hashed_passwords = stauth.Hasher(passwords).generate()
-
+# ----- SQL AUTH
+conn = sql.connect("file:auth.db?mode=ro", uri=True)
+cred_data = conn.execute("select username,password,names from users").fetchall()
+names = []
+usernames = []
+passwords = []
 credentials = {"usernames":{}}
 
-for un, name, pw in zip(usernames, names, hashed_passwords):
-    user_dict = {"name":name,"password":pw}
-    credentials["usernames"].update({un:user_dict})
+if cred_data:
+    cred_data2 = list(zip(*cred_data))
+    usernames = cred_data2[0]
+    passwords = cred_data2[1]
+    names = cred_data2[2]
+    hashed_passwords = stauth.Hasher(passwords).generate()
+    for un, pw, name in zip(usernames,hashed_passwords,names):
+        user_dict = {"name":name,"password":pw}
+        credentials["usernames"].update({un:user_dict})
+else:
+    st.write("No entries in authentication database")
 
 authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
 
