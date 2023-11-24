@@ -31,18 +31,16 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
-def get_df():
-    df = []
     
 # Fungsi untuk menambahkan catatan memancing
-def add_note():
+def add_note(conn, init_uploaded_file, init_location_details, init_combined_datetime, init_fish_type, init_bait_used, init_fishing_method):
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
-    uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'], key="?1")
+    uploaded_file_ = st.file_uploader("Unggah Foto", type=['jpg', 'png'], value=init_uploaded_file)
 
     # Memasukkan detail lokasi
-    location_details = st.text_input("Detail Lokasi")
+    location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
 
     # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
     # HTML template for the location picker
@@ -179,39 +177,48 @@ def add_note():
     components.html(js_code)
         
     # Input tanggal
-    input_date = st.date_input("Tanggal")
+    input_date_ = st.date_input("Tanggal")
 
     # Input waktu
-    input_time = st.time_input("Waktu")
+    input_time_ = st.time_input("Waktu")
 
     # Menggabungkan tanggal dan waktu menjadi objek datetime
-    combined_datetime = datetime.datetime.combine(input_date, input_time)
+    combined_datetime_ = datetime.datetime.combine(input_date, input_time, value=init_combined_datetime)
 
     # Memasukkan jenis ikan yang ditangkap
-    fish_type = st.text_input("Jenis Ikan yang Ditangkap")
+    fish_type_ = st.text_input("Jenis Ikan yang Ditangkap", value=init_fish_type)
 
     # Memasukkan metode memancing
-    bait_used = st.text_input("Jenis Umpan")
+    bait_used_ = st.text_input("Jenis Umpan",value=init_bait_used)
 
     # Memasukkan metode memancing
-    fishing_method = st.text_input("Metode Memancing")
+    fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
 
-    if st.button('Simpan'):
-        data = {
-            'Foto': [uploaded_file] if uploaded_file else [],
-            'Lokasi': [location_details],
-            'Jenis Ikan': [fish_type],
-            'Umpan': [bait_used],
-            'Metode': [fishing_method],
-            'Tanggal & waktu': [combined_datetime],
-        }
-        df = pd.DataFrame(data)
-        st.success("Catatan disimpan")
-        st.data_editor(df)
-        
+     if st.button("Simpan Catatan"):
+         with conn:
+             conn.execute(
+                "INSERT INTO catatan(location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?)
+                (location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+            )
+             st.text("Database Updated")
+
+
 # Fungsi untuk mengecek catatan
-def check_note():
-    st.write("Catatanmu")
+def check_note(conn):
+    table_data = conn.execute("select location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
+    if table_data:
+        table_data2 = list(zip(*table_data))
+        st.table(
+            {
+                "location_details": (table_data2)[0],
+                "datetime": table_data2[1],
+                "fish_type": table_data2[2],
+                "bait_used": table_data2[3],
+                "fishing_method": table_data2[4],
+            }
+        )
+    else:
+        st.write("No entries in authentication database")
     
 # Fungsi untuk mengedit catatan
 def edit_note():
@@ -264,6 +271,8 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 # ----- SQL AUTH
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
+creddata2 = conn.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT,location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+
 names = []
 usernames = []
 passwords = []
