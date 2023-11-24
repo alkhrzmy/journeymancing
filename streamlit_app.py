@@ -195,16 +195,6 @@ def add_note():
         # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
         st.success("Catatan Mancing Disimpan")
 
-        # Mendapatkan info cuaca jika koordinat telah didapat
-        if lat and lon:
-            weather_info = get_weather_info(lat, lon)
-            st.subheader("Info Cuaca")
-            st.write(f"Temperatur: {weather_info['temperature']}")
-            st.write(f"Kondisi Cuaca: {weather_info['condition']}")
-            st.write(f"Kecepatan Angin: {weather_info['wind_speed']}")
-        else:
-            st.warning("Harap cari lokasi yang valid untuk mendapatkan informasi cuaca")
-
 
 # Fungsi untuk mengedit catatan
 def edit_note():
