@@ -9,7 +9,7 @@ import streamlit_authenticator as stauth
 
 import streamlit.components.v1 as components
 # import for sql authentication
-import auth
+import authlib
 import sqlite3 as sql
 
 # Function to get weather info from a suitable weather API using latitude and longitude
