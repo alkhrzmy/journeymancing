@@ -5,6 +5,7 @@ import requests
 import datetime
 import pandas as pd
 from PIL import Image
+import io
 
 import streamlit_authenticator as stauth
 
@@ -196,6 +197,13 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
 
     # Memasukkan metode memancing
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
+    
+    if st.button("Simpan Catatan"):
+        cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO catatan(uploaded_file_name, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
+                (uploaded_file.name, sqlite3.Binary(uploaded_file.read(), uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),)
+            st.write("Catatan baru tersimpan")
 
 # Fungsi untuk mengecek catatan
 def check_note(conn1):
