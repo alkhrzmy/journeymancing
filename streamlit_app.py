@@ -201,21 +201,20 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     if st.button("Simpan Catatan"):
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO catatan(uploaded_file_name, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
-            (uploaded_file.name, sqlite3.Binary(uploaded_file.read()), uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+            "INSERT INTO catatan(uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
+            (sqlite3.Binary(uploaded_file.read()), uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
             )
         st.success("Catatan baru tersimpan")
 
 # Fungsi untuk mengecek catatan
 def check_note(conn1):
-    table_data = conn1.execute("select uploaded_file_name, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
+    table_data = conn1.execute("select uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
     if table_data:
         data_to_display = []
         for row in table_data:
-            uploaded_file_name, uploaded_file_data, location_details, datetime_val, fish_type, bait_used, fishing_method = row
+            uploaded_file_data, location_details, datetime_val, fish_type, bait_used, fishing_method = row
             img = Image.open(io.BytesIO(uploaded_file_data))
             data_to_display.append({
-                "Uploaded File": uploaded_file_name,
                 "Location Details": location_details,
                 "Datetime": datetime_val,
                 "Fish Type": fish_type,
@@ -279,7 +278,7 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 conn1 = sql.connect("file:auth.db?mode=rwc", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
-creddata2 = conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT,uploaded_file_name VARCHAR(255), uploaded_file_data BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+creddata2 = conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, uploaded_file_data BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
 
 names = []
 usernames = []
