@@ -33,7 +33,7 @@ def get_clicked_coordinates():
 
     
 # Fungsi untuk menambahkan catatan memancing
-def add_note(conn, init_uploaded_file, init_location_details, init_combined_datetime, init_fish_type, init_bait_used, init_fishing_method):
+def add_note(conn1, init_uploaded_file, init_location_details, init_combined_datetime, init_fish_type, init_bait_used, init_fishing_method):
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
@@ -195,8 +195,8 @@ def add_note(conn, init_uploaded_file, init_location_details, init_combined_date
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
 
     if st.button("Simpan Catatan"):
-        with conn:
-            conn.execute(
+        with conn1:
+            conn1.execute(
                 "INSERT INTO catatan(location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?)",
                 (location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
             )
@@ -270,8 +270,9 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 
 # ----- SQL AUTH
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
+conn1 = sql.connect("file:auth.db?mode=rwc", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
-creddata2 = conn.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT,location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+creddata2 = conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT,location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
 
 names = []
 usernames = []
