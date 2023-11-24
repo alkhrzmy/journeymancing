@@ -202,12 +202,7 @@ def add_note():
                    "fishing_method": fishing_method, "location_details": location_details}
         df.loc[len(df)] = new_row
         st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
-    if st.button("Simpan Catatan"):
-        note_data = [combined_datetime, fish_type, fishing_method, location_details]
-
-        # Simpan data catatan ke dalam file lokal (catatan_mancing.csv)
-        st.success("Catatan Mancing Disimpan")
-
+        
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
