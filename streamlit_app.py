@@ -30,6 +30,13 @@ def get_weather_info(latitude, longitude):
 
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
+
+df = pd.DataFrame([
+   {"foto": "url", "rating": 4, "is_widget": True},
+   {"foto": "url", "rating": 5, "is_widget": False},
+   {"foto": "url", "rating": 3, "is_widget": True},
+])
+
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     st.title("Tambah Catatan Mancing")
