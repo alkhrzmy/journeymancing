@@ -247,13 +247,9 @@ st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide"
 
 st.header("Journal Mancing®")
 
-def new_img():
-    response = requests.get("https://source.unsplash.com/random")
-    bites = BytesIO(base64.b64decode(response.content))
-    aux_im = Image.open(BytesIO(response.content))
-    st.image(aux_im)
+st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 
-new_img()
+
 # ----- SQL AUTH
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
