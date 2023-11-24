@@ -17,13 +17,7 @@ df = pd.DataFrame(
    ]
 )
 
-def input_data():
-    
-
 edited_df = st.data_editor(df)
-
-favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
-st.markdown(f"Your favorite command is **{favorite_command}** 🎈")
 
 # Function to get weather info from a suitable weather API using latitude and longitude
 def get_weather_info(latitude, longitude):
