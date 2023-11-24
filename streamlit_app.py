@@ -31,14 +31,6 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
-df = pd.DataFrame(columns = ['Foto',
-        'Lokasi',
-        'Jenis Ikan',
-        'Umpan',
-        'Metode',
-        'Tanggal & waktu',
-                            ])
-
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
     st.title("Tambah Catatan Mancing")
@@ -210,12 +202,12 @@ def add_note():
             'Metode': [fishing_method],
             'Tanggal & waktu': [combined_datetime],
         }
-        df = df.append(data, ignore_index=True)
+        df = pd.DataFrame(data)
         
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
-    edited_df = st.data_editor(df)
+    st.data_editor(df)
     
 # Fungsi untuk mengedit catatan
 def edit_note():
