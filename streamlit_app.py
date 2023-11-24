@@ -198,7 +198,7 @@ def add_note():
 
     if st.button('Simpan'):
         data = {
-            'Foto': [uploaded_file],
+            'Foto': [uploaded_file] if uploaded_file else [],
             'Lokasi': [location_details],
             'Jenis Ikan': [fish_type],
             'Umpan': [bait_used],
