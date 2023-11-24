@@ -31,7 +31,7 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
-df = pd.DataFrame([])
+df = pd.DataFrame(columns=["foto", "rating", "is_widget", "datetime", "fish_type", "fishing_method", "location_details"])
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
