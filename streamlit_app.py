@@ -199,11 +199,12 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
     
     if st.button("Simpan Catatan"):
-        cursor = conn.cursor()
+        cursor = conn1.cursor()
         cursor.execute(
             "INSERT INTO catatan(uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
             (sql.Binary(uploaded_file.read()), uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
-            )
+        )
+        conn.commit()
         st.success("Catatan baru tersimpan")
 
 # Fungsi untuk mengecek catatan
