@@ -196,7 +196,7 @@ def add_note():
     if st.button("Simpan Catatan"):
         new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
                    "fishing_method": fishing_method, "location_details": location_details}
-        df = df.append(new_row, ignore_index=True)
+        df = df.append(new_row)
         st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
         
 # Fungsi untuk mengecek catatan
