@@ -177,10 +177,10 @@ def add_note(conn1, init_location_details="", init_combined_datetime="", init_fi
     components.html(js_code)
         
     # Input tanggal
-    input_date_ = st.date_input("Tanggal")
+    input_date = st.date_input("Tanggal")
 
     # Input waktu
-    input_time_ = st.time_input("Waktu")
+    input_time = st.time_input("Waktu")
 
     # Menggabungkan tanggal dan waktu menjadi objek datetime
     combined_datetime_ = datetime.datetime.combine(input_date, input_time, value=init_combined_datetime)
