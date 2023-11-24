@@ -194,11 +194,11 @@ def add_note():
     # Memasukkan metode memancing
     fishing_method = st.text_input("Metode Memancing")
 
-if st.button("Simpan Catatan"):
-    new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
-               "fishing_method": fishing_method, "location_details": location_details}
-    df = df.append(new_row, ignore_index=True)
-    st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
+    if st.button("Simpan Catatan"):
+        new_row = {"foto": uploaded_file, "datetime": combined_datetime, "fish_type": fish_type,
+                   "fishing_method": fishing_method, "location_details": location_details}
+        df = df.append(new_row, ignore_index=True)
+        st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
         
 # Fungsi untuk mengecek catatan
 def check_note():
