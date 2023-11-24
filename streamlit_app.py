@@ -12,6 +12,19 @@ import streamlit.components.v1 as components
 import authlib
 import sqlite3 as sql
 
+df = pd.DataFrame(
+    [
+   ]
+)
+
+def input_data():
+    
+
+edited_df = st.data_editor(df)
+
+favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
+st.markdown(f"Your favorite command is **{favorite_command}** 🎈")
+
 # Function to get weather info from a suitable weather API using latitude and longitude
 def get_weather_info(latitude, longitude):
 # Implement logic to fetch weather info from a weather API using latitude and longitude
@@ -188,7 +201,12 @@ def add_note():
     # Memasukkan metode memancing
     fishing_method = st.text_input("Metode Memancing")
 
-    # Tombol untuk menyimpan catatan memancing
+    if st.button("Simpan Catatan"):
+        new_row = {"foto": uploaded_file, "rating": None, "is_widget": False,
+                   "datetime": combined_datetime, "fish_type": fish_type,
+                   "fishing_method": fishing_method, "location_details": location_details}
+        df.loc[len(df)] = new_row
+        st.success("Catatan Mancing Disimpan")    # Tombol untuk menyimpan catatan memancing
     if st.button("Simpan Catatan"):
         note_data = [combined_datetime, fish_type, fishing_method, location_details]
 
