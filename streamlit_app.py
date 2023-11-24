@@ -31,7 +31,6 @@ def get_weather_info(latitude, longitude):
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
-df = []
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
@@ -206,12 +205,14 @@ def add_note():
         }
         df = pd.DataFrame(data)
         st.success("Catatan disimpan")
+
+    def get_df():
         return df
         
 # Fungsi untuk mengecek catatan
 def check_note():
     st.write("Catatanmu")
-    st.data_editor(df)
+    st.data_editor(get_df())
     
 # Fungsi untuk mengedit catatan
 def edit_note():
