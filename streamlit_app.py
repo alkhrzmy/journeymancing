@@ -211,7 +211,10 @@ def add_note():
         
 # Fungsi untuk mengecek catatan
 def check_note():
-    df = get_df()
+    if add_note() is None:
+        df = get_df()
+    else: 
+        df
     st.write("Catatanmu")
     st.data_editor(df)
     
