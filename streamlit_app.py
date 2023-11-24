@@ -232,19 +232,32 @@ def analytics_page():
 
 
 def button_coiche():
-    button_col1, button_col2, button_col3 = st.tabs(["Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
+    button_col1, button_col2, button_col3, button_col4 = st.tabs(["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
 
     with button_col1:
-        add_note()
+        check_note()
     with button_col2:
-        edit_note()
+        add_note()
     with button_col3:
+        edit_note()
+    with button_col4:
         delete_note()
 
 st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
 st.header("Journal Mancing®")
 
+st.markdown(
+    """
+    <style>
+    body {
+        background-image: url('https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg');
+        background-size: cover;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # ----- SQL AUTH
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
