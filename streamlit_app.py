@@ -35,6 +35,7 @@ df = pd.DataFrame(columns=["foto", "rating", "is_widget", "datetime", "fish_type
 
 # Fungsi untuk menambahkan catatan memancing
 def add_note():
+    global df
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
