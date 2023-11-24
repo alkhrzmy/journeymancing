@@ -33,11 +33,11 @@ def get_clicked_coordinates():
 
     
 # Fungsi untuk menambahkan catatan memancing
-def add_note(conn1, init_uploaded_file="", init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
+def add_note(conn1, init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
-    uploaded_file_ = st.file_uploader("Unggah Foto", type=['jpg', 'png'], value=init_uploaded_file)
+    uploaded_file_ = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
 
     # Memasukkan detail lokasi
     location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
