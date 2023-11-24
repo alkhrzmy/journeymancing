@@ -3,3 +3,4 @@ mysql-connector-python
 PIL 
 folium
 streamlit-authenticator
+pandas
