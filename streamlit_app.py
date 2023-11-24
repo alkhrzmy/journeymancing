@@ -207,14 +207,10 @@ def add_note():
         }
         df = pd.DataFrame(data)
         st.success("Catatan disimpan")
-        return df
+        st.data_editor(df)
         
 # Fungsi untuk mengecek catatan
 def check_note():
-    if add_note() is None:
-        df = get_df()
-    else: 
-        df
     st.write("Catatanmu")
     st.data_editor(df)
     
