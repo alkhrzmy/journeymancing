@@ -183,7 +183,7 @@ def add_note(conn1, init_location_details="", init_combined_datetime="", init_fi
     input_time = st.time_input("Waktu")
 
     # Menggabungkan tanggal dan waktu menjadi objek datetime
-    combined_datetime_ = datetime.datetime.combine(input_date, input_time, value=init_combined_datetime)
+    combined_datetime_ = datetime.datetime.combine(input_date, input_time)
 
     # Memasukkan jenis ikan yang ditangkap
     fish_type_ = st.text_input("Jenis Ikan yang Ditangkap", value=init_fish_type)
