@@ -200,9 +200,10 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     
     if st.button("Simpan Catatan"):
         with conn:
+            uploaded_file_data = uploaded_file.read()
             conn.execute(
-                "INSERT INTO catatan(uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
-                (uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+                "INSERT INTO catatan(uploaded_file, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
+                (uploaded_file_data, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
             )
             st.success("Catatan baru tersimpan")
 
