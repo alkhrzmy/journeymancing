@@ -208,20 +208,18 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
 
 # Fungsi untuk mengecek catatan
 def check_note(conn):
-    table_data = conn.execute("SELECT uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    table_data = conn.execute("SELECT location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
         data_to_display = []
         for row in table_data:
-            uploaded_file_data, location_details, datetime_val, fish_type, bait_used, fishing_method = row
-            img = Image.open(io.BytesIO(uploaded_file_data))
+            location_details, datetime_val, fish_type, bait_used, fishing_method = row
             data_to_display.append({
                 "Location Details": location_details,
                 "Datetime": datetime_val,
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
-                "Image": img,
             })
         st.table(data_to_display)
     else:
