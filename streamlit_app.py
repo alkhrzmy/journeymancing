@@ -42,7 +42,7 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     
     if init_uploaded_file_ is not None:
         uploaded_file = init_uploaded_file_
-        
+        uploaded_file_data = uploaded_file.read()
     # Memasukkan detail lokasi
     location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
 
@@ -200,7 +200,6 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     
     if st.button("Simpan Catatan"):
         with conn:
-            uploaded_file_data = uploaded_file.read()
             conn.execute(
                 "INSERT INTO catatan(uploaded_file, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
                 (uploaded_file_data, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
