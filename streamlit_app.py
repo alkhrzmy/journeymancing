@@ -240,7 +240,7 @@ def edit_note(conn):
         
         # Cari catatan berdasarkan id yang dipilih
         selected_note = [row for row in table_data if row[0] == selected_id][0]
-        uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = row
+        uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = selected_note
         img = Image.open(io.BytesIO(uploaded_file_data))
         data_to_display = []
         data_to_display.append({
