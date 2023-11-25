@@ -208,15 +208,16 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
 
 # Fungsi untuk mengecek catatan
 def check_note(conn):
-    table_data = conn.execute("select uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
+    table_data = conn.execute("SELECT uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    
     if table_data:
         data_to_display = []
-        table_data2 = list(zip(*table_data))
-        for row in table_data2:
+        for row in table_data:
+            uploaded_file_data, location_details, datetime_val, fish_type, bait_used, fishing_method = row
             img = Image.open(io.BytesIO(uploaded_file_data))
-            data_to_display({
+            data_to_display.append({
                 "Location Details": location_details,
-                "Datetime": datetime,
+                "Datetime": datetime_val,
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
@@ -224,7 +225,7 @@ def check_note(conn):
             })
         st.table(data_to_display)
     else:
-        st.write("No entries in authentication database")
+        st.write("No entries in the authentication database")
     
 # Fungsi untuk mengedit catatan
 def edit_note():
