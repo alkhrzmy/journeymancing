@@ -6,6 +6,7 @@ import datetime
 import pandas as pd
 from PIL import Image
 import io
+import json
 
 import streamlit_authenticator as stauth
 
@@ -136,9 +137,22 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
         });
     }
         // Fungsi untuk mendapatkan nilai latitude dan longitude yang dipilih
-    function getClickedCoordinates() {
-        return [clickedLat, clickedLng];
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
     }
+
+    // Panggil fungsi ini ketika Anda memiliki nilai latitude dan longitude
+    function setCoordinatesInCookie(lat, lon) {
+        var coordinates = {'latitude': clickedLat, 'longitude': clickedLng};
+        setCookie('coordinates', JSON.stringify(coordinates), 1);
+    }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6JQDWAVYXN07fZAtBK-ATcBg750J68bQ&libraries=places&callback=initMap" async defer></script>
     </body>
@@ -152,34 +166,26 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     clicked_lat = None
     clicked_lng = None
     
-        # Update the getClickedCoordinates() function to store clicked values
-    def get_clicked_coordinates():
-        return clicked_lat, clicked_lng
-    
-    # Function to extract clicked coordinates from the map
-    def on_click(clicked_latlng):
-        global clicked_lat, clicked_lng
-        clicked_lat = clicked_latlng.lat
-        clicked_lng = clicked_latlng.lng
-    
-    # Display the coordinates when available
-    lat_lon = get_clicked_coordinates()
-    if lat_lon[0] is not None and lat_lon[1] is not None:
-        lat, lon = lat_lon
-        st.write(f"Latitude: {lat}, Longitude: {lon}")
-    
-        # Execute JavaScript to pass the clicked coordinates to Python
-    js_code = """
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var map = document.getElementById('map');
-            map.addEventListener('click', function(event) {
-                google.colab.kernel.invokeFunction('notebook.add_coordinates', [event.latLng.lat(), event.latLng.lng()], {});
-                });
-            });
-    </script>
-    """
-    components.html(js_code)
+    # Update the getClickedCoordinates() function to store clicked values
+    # Membaca nilai dari cookie
+    def get_cookie_value(cookie_name):
+        cookie_value = None
+        if "coordinates" in st.request.cookies:
+            cookie_value = st.request.cookies["coordinates"]
+        return cookie_value
+
+    # Mendapatkan nilai latitude dan longitude dari cookie
+    coordinates_json = get_cookie_value("coordinates")
+
+    if coordinates_json:
+        coordinates = json.loads(coordinates_json)
+        clicked_lat = coordinates.get("latitude")
+        clicked_lng = coordinates.get("longitude")
+
+        # Gunakan nilai latitude dan longitude seperti yang diinginkan
+        st.write(f'Latitude: {clicked_lat}, Longitude: {clicked_lng}')
+    else:
+        st.write("Cookie 'coordinates' tidak ditemukan.")
         
     # Input tanggal
     input_date = st.date_input("Tanggal")
