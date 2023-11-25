@@ -71,7 +71,8 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
     if init_uploaded_file_ is None:
         uploaded_file = init_uploaded_file_
-    uploaded_file_data = uploaded_file.read()
+    if init_uploaded_file_ is not None:
+        uploaded_file_data = uploaded_file.read()
     
     # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
     # HTML template for the location picker
