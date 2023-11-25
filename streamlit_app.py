@@ -230,48 +230,7 @@ def check_note(conn):
     
 # Fungsi untuk mengedit catatan
 def edit_note(conn):
-    table_data = conn.execute("SELECT id, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
-    
-    if table_data:
-        selected_id = st.selectbox("Pilih Catatan yang Ingin Diedit", [f"ID: {row[0]}" for row in table_data])
-        
-        # Ambil id yang dipilih
-        selected_id = int(selected_id.split(":")[1].strip())
-        
-        # Cari catatan berdasarkan id yang dipilih
-        selected_note = [row for row in table_data if row[0] == selected_id]
-        if len(selected_note) > 0:
-            selected_note = selected_note[0]
-            # Now you can proceed with unpacking the values if the length is as expected
-            if len(selected_note) == 6:
-                uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = selected_note
-                # Rest of your code remains unchanged
-            else:
-                st.write("Unexpected data format for selected note")
-        else:
-            st.write("Selected note not found")
-        
-        # Tampilkan data yang dipilih untuk diedit
-        uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = selected_note
-        
-        st.image(uploaded_file_data, caption='Foto')
-        edited_location = st.text_input("Ubah Detail Lokasi", value=location_details)
-        edited_date = st.date_input("Ubah Tanggal", value=datetime.date())
-        edited_time = st.time_input("Ubah Waktu", value=datetime.time())
-        edited_fish_type = st.text_input("Ubah Jenis Ikan", value=fish_type)
-        edited_bait_used = st.text_input("Ubah Jenis Umpan", value=bait_used)
-        edited_fishing_method = st.text_input("Ubah Metode Memancing", value=fishing_method)
-        
-        if st.button("Simpan Perubahan"):
-            edited_datetime = datetime.combine(edited_date, edited_time)
-            with conn:
-                conn.execute(
-                    "UPDATE catatan SET location_details=?, datetime=?, fish_type=?, bait_used=?, fishing_method=? WHERE id=?",
-                    (edited_location, edited_datetime, edited_fish_type, edited_bait_used, edited_fishing_method, selected_id)
-                )
-            st.success("Perubahan tersimpan")
-    else:
-        st.write("Tidak ada catatan untuk diedit")
+    st.write("Hhe")
 
 # Fungsi untuk menghapus catatan
 def delete_note():
