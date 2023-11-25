@@ -64,7 +64,7 @@ def get_clicked_coordinates():
 
 random_photo = "https://w7.pngwing.com/pngs/1018/566/png-transparent-smiley-emoticon-sadness-random-icons-miscellaneous-face-black-and-white.png"
 # Fungsi untuk menambahkan catatan memancing
-def add_note(conn, init_uploaded_file_=random_photo, init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
+def add_note(conn, init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
@@ -250,35 +250,32 @@ def add_note(conn, init_uploaded_file_=random_photo, init_location_details="", i
     if st.button("Simpan Catatan"):
         with conn:
             conn.execute(
-                "INSERT INTO catatan(uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
-                (uploaded_file_data, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+                "INSERT INTO catatan(location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?)",
+                (location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
             )
             st.success("Catatan baru tersimpan")
 
 # Fungsi untuk mengecek catatan
 def check_note(conn):
-    table_data = conn.execute("SELECT uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    table_data = conn.execute("SELECT location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
         data_to_display = []
         for row in table_data:
-            uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = row
-            img = Image.open(io.BytesIO(uploaded_file_data))
+            location_details, datetime, fish_type, bait_used, fishing_method = row
             data_to_display.append({
-                "Image": uploaded_file_data,
                 "Location Details": location_details,
                 "Datetime": datetime,
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
             })
-        st.data_editor(data_to_display, column_config={"Image": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
     else:
         st.write("No entries in the authentication database")
     
 # Fungsi untuk mengedit catatan
 def edit_note(conn):
-    table_data = conn.execute("SELECT id, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    table_data = conn.execute("SELECT id, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
         selected_id = st.selectbox("Pilih Catatan yang Ingin Diedit", [f"ID: {row[0]}" for row in table_data])
@@ -302,7 +299,7 @@ def edit_note(conn):
 
 # Fungsi untuk menghapus catatan
 def delete_note(conn):
-    table_data = conn.execute("SELECT id, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    table_data = conn.execute("SELECT id, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
         selected_id = st.selectbox("Pilih Catatan yang Ingin Dihapus", [f"ID: {row[0]}" for row in table_data])
