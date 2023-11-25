@@ -1,11 +1,8 @@
 import streamlit as st
-import git
-import csv
 import requests
 import datetime
 import pandas as pd
 from PIL import Image
-import io
 import json
 import extra_streamlit_components as stx
 
@@ -13,44 +10,38 @@ import streamlit_authenticator as stauth
 
 import streamlit.components.v1 as components
 # import for sql authentication
-import authlib
 import sqlite3 as sql
 
 # Function to get weather info from a suitable weather API using latitude and longitude
 def get_hourly_weather_info(latitude, longitude, date_time):
-    base_url = "https://api.openweathermap.org/data/2.5/onecall?"
+    base_url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?"
     # Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
     params = {
         "lat": latitude,
         "lon": longitude,
-        "exclude": "current,minutely,daily",  # Exclude unnecessary data
+        #"exclude": "current,minutely,daily",  # Exclude unnecessary data
         "appid": "bd5e378503939ddaee76f12ad7a97608",
-        "units": "metric"  # Units can be metric, imperial, or standard
+        "dt": date_time,
+        #"units": "metric"  # Units can be metric, imperial, or standard
     }
 
     try:
-        if date_time:  # If specific date and time are provided
-            timestamp = int(date_time.timestamp())
-            params["dt"] = timestamp
-
         response = requests.get(base_url, params=params)
         data = response.json()
-
+        
         if response.status_code == 200:
-            hourly_weather = data.get("hourly", [])
+            hourly_weather = data.get("current")
             if hourly_weather:
-                for hour_data in hourly_weather:
-                    # Process hourly weather data here as needed
-                    timestamp = hour_data.get("dt")
-                    weather_info = {
-                        "time": datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'),
-                        "temperature": hour_data.get("temp"),
-                        "condition": hour_data["weather"][0]["main"],
-                        "wind_speed": hour_data.get("wind_speed")
-                    }
-                    print(weather_info)  # Example: Print weather information
-                    return weather_info
-                return hourly_weather
+                # Process hourly weather data here as needed
+                timestamp = hourly_weather.get("dt")
+                weather_info = {
+                    "time": datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'),
+                    "temperature": hourly_weather.get("temp"),
+                    "condition": hourly_weather["weather"][0]["main"],
+                    "wind_speed": hourly_weather.get("wind_speed")
+                }
+                print(weather_info)  # Example: Print weather information
+                return weather_info
             else:
                 return None
         else:
@@ -59,24 +50,10 @@ def get_hourly_weather_info(latitude, longitude, date_time):
         print("Error fetching data:", e)
         return None
 
-def get_clicked_coordinates():
-    return components.html('<script>getClickedCoordinates();</script>', height=0)
-
-random_photo = "https://w7.pngwing.com/pngs/1018/566/png-transparent-smiley-emoticon-sadness-random-icons-miscellaneous-face-black-and-white.png"
 # Fungsi untuk menambahkan catatan memancing
 def add_note(conn, init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
     st.title("Tambah Catatan Mancing")
     
-    # Memasukkan foto
-    #uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
-    #if uploaded_file is None:
-    #    uploaded_file = init_uploaded_file_
-    #if uploaded_file is not None:
-    #    uploaded_file_data = uploaded_file.read()
-    
-    # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
-    # HTML template for the location picker
-    # Display the location picker
     google_maps_autocomplete = """
     <!DOCTYPE html>
     <html>
@@ -209,8 +186,10 @@ def add_note(conn, init_location_details="", init_combined_datetime="", init_fis
             cookie_value = cookie_manager.get(cookie=cookie_name)
         return cookie_value
     checkkoor = False
+
     if st.button("Simpan Koordinat"):
         # Mendapatkan nilai latitude dan longitude dari cookie
+        
         coordinates = get_cookie_value("coordinates")
         clicked_lat = coordinates.get("latitude")
         clicked_lng = coordinates.get("longitude")
@@ -239,14 +218,23 @@ def add_note(conn, init_location_details="", init_combined_datetime="", init_fis
     # Memasukkan metode memancing
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
 
-    latitude = clicked_lat
-    longitude = clicked_lat
-    specific_date_time = datetime_
-    
-    weather_infor = get_hourly_weather_info(latitude, longitude, specific_date_time)
+    datetime_ = str(datetime.datetime.combine(input_date, input_time))
+    datetime_object = datetime.datetime.strptime(datetime_, "%Y-%m-%d %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
 
-    st.write(weather_infor)
+    # Convert the datetime object to epoch time (seconds since the epoch)
+    epoch_time = int(datetime_object.timestamp())
     
+    weather_infor = get_hourly_weather_info(clicked_lat, clicked_lng, epoch_time)
+    
+    if input_time and input_date and clicked_lat:
+        weather_infor = get_hourly_weather_info(clicked_lat, clicked_lng, epoch_time)
+
+        weather_text = f"Pada {weather_infor['time']}, suhu udara adalah {weather_infor['temperature'] - 273.15:.2f}°C, " \
+                f"dengan kondisi {weather_infor['condition'].lower()}, " \
+                f"dan kecepatan angin sebesar {weather_infor['wind_speed']} m/s."
+
+        st.text(weather_text)
+
     if st.button("Simpan Catatan"):
         with conn:
             conn.execute(
@@ -258,7 +246,6 @@ def add_note(conn, init_location_details="", init_combined_datetime="", init_fis
 # Fungsi untuk mengecek catatan
 def check_note(conn):
     table_data = conn.execute("SELECT location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
-    
     if table_data:
         data_to_display = []
         for row in table_data:
@@ -270,6 +257,7 @@ def check_note(conn):
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
             })
+            st.data_editor(data_to_display)
     else:
         st.write("No entries in the authentication database")
     
@@ -278,22 +266,46 @@ def edit_note(conn):
     table_data = conn.execute("SELECT id, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
-        selected_id = st.selectbox("Pilih Catatan yang Ingin Diedit", [f"ID: {row[0]}" for row in table_data])
+        selected_id = st.selectbox("Pilih Catatan yang Ingin diedit", [f"ID: {row[0]}" for row in table_data])
         
         # Ambil id yang dipilih
-        selected_id = int(selected_id.split(":")[1].strip())
-        
-        # Cari catatan berdasarkan id yang dipilih
-        selected_note = [row for row in table_data if row[0] == selected_id][0]
-        
-        if st.button("Simpan Perubahan"):
-            edited_datetime = datetime.combine(edited_date, edited_time)
-            with conn:
-                conn.execute(
-                    "UPDATE catatan SET location_details=?, datetime=?, fish_type=?, bait_used=?, fishing_method=? WHERE id=?",
-                    (edited_location, edited_datetime, edited_fish_type, edited_bait_used, edited_fishing_method, selected_id)
-                )
-            st.success("Perubahan tersimpan")
+        selected_id_row = int(selected_id.split(":")[1].strip())
+
+        data_to_display = []
+        for row in table_data:
+            if row[0] == selected_id_row:
+                data_to_display.append({
+                    "Location Details": row[1],
+                    "Datetime": row[2],
+                    "Fish Type": row[3],
+                    "Bait Used": row[4],
+                    "Fishing Method": row[5],
+                })
+                df = pd.DataFrame(data_to_display)
+                st.table(df)
+            
+        if st.checkbox("Edit Catatan"):
+            new_location = st.text_input("Masukkan Lokasi Baru")
+            if new_location is None:
+                new_location = data_to_display[0]["Location Details"]
+            new_datetime = st.text_input("Masukkan Waktu Baru")
+            if new_datetime is None:
+                new_datetime = data_to_display[0]["Datetime"]
+            new_fish_type = st.text_input("Masukkan Jenis Ikan Baru")
+            if new_fish_type is None:
+                new_fish_type = data_to_display[0]["Fish Type"]
+            new_bait_used = st.text_input("Masukkan Umpan Baru")
+            if new_bait_used is None:
+                new_bait_used = data_to_display[0]["Bait Used"]
+            new_fishing_method = st.text_input("Masukkan Metode Memancing Baru")
+            if new_fishing_method is None:
+                new_fishing_method = data_to_display[0]["Fishing Method"]
+            
+            if st.button("Simpan Perubahan"):
+                conn.execute("UPDATE catatan SET location_details=?, datetime=?, fish_type=?, bait_used=?, fishing_method=? WHERE id=?",
+                             (new_location, new_datetime, new_fish_type, new_bait_used, new_fishing_method, selected_id))
+                st.success(f"Catatan dengan ID {selected_id_row} telah diperbarui.")
+
     else:
         st.write("Tidak ada catatan untuk diedit")
 
@@ -302,17 +314,27 @@ def delete_note(conn):
     table_data = conn.execute("SELECT id, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
-        selected_id = st.selectbox("Pilih Catatan yang Ingin Dihapus", [f"ID: {row[0]}" for row in table_data])
+        selected_id = st.selectbox("Pilih Catatan yang Ingin dihapus", [f"ID: {row[0]}" for row in table_data])
         
         # Ambil id yang dipilih
-        selected_id = int(selected_id.split(":")[1].strip())
-        
-        # Cari catatan berdasarkan id yang dipilih
-        selected_note = [row for row in table_data if row[0] == selected_id][0]
+        selected_id_row = int(selected_id.split(":")[1].strip())
+
+        data_to_display = []
+        for row in table_data:
+            if row[0] == selected_id_row:
+                data_to_display.append({
+                    "Location Details": row[1],
+                    "Datetime": row[2],
+                    "Fish Type": row[3],
+                    "Bait Used": row[4],
+                    "Fishing Method": row[5],
+                })
+                df = pd.DataFrame(data_to_display)
+                st.table(df)
 
         if st.button("Hapus Catatan"):
             with conn:
-                conn.execute("DELETE FROM catatan WHERE id=?", (selected_id,))
+                conn.execute("DELETE FROM catatan WHERE id=?", (selected_id_row,))
             st.success("Catatan telah dihapus")
     else:
         st.write("Tidak ada catatan untuk dihapus")
@@ -321,21 +343,6 @@ def delete_note(conn):
 # Sidebar navigation function
 current_page = "Home"  # Inisialisasi status halaman
 
-def sidebar_navigation():
-    #st.sidebar.title("Wellcome bro")
-    global current_page  # Gunakan variabel global untuk menyimpan status halaman terkini
-    if st.sidebar.button("Home"):
-        current_page = "Home"
-    elif st.sidebar.button("Analytics"):
-        current_page = "Analytics"
-    return current_page  # Mengembalikan status halaman terkini
-
-
-# Function to display analytics page
-def analytics_page():
-    st.title("Analytics Page")
-    # Add your analytics content here
-    st.write("Analytics content goes here")
 
 def button_coiche():
     button_col1, button_col2, button_col3, button_col4 = st.tabs(["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
@@ -349,6 +356,7 @@ def button_coiche():
     with button_col4:
         delete_note(conn1)
 
+
 st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
 st.header("Journal Mancing®")
@@ -360,7 +368,7 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 conn1 = sql.connect("file:auth.db?mode=rwc", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
-conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, uploaded_file_data BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
 
 names = []
 usernames = []
@@ -379,7 +387,7 @@ if cred_data:
 else:
     st.write("No entries in authentication database")
 
-authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=30)
+authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
 
 name, authentication_status, username = authenticator.login("Login", "main")
 
@@ -393,15 +401,10 @@ if authentication_status:
         st.title("Home Page")
         button_coiche()
 
-
     def main():
         authenticator.logout("Logout","sidebar")
         st.sidebar.title(f"Welcome {name}")
-        choice = sidebar_navigation()
-        if choice == "Home":
-            main_page()
-        elif choice == "Analytics":
-            analytics_page()
+        main_page()
             
     if __name__ == "__main__":
         main()
