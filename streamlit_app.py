@@ -34,7 +34,7 @@ def get_clicked_coordinates():
 
     
 # Fungsi untuk menambahkan catatan memancing
-def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
+def add_note(conn, init_uploaded_file_="", init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
@@ -199,13 +199,12 @@ def add_note(conn1, init_uploaded_file_="", init_location_details="", init_combi
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
     
     if st.button("Simpan Catatan"):
-        cursor = conn1.cursor()
-        cursor.execute(
-            "INSERT INTO catatan(uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
-            (uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
-        )
-        conn.commit()
-        st.success("Catatan baru tersimpan")
+        with conn:
+            conn.execute(
+                "INSERT INTO catatan(uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?,?)",
+                (uploaded_file, location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+            )
+            st.success("Catatan baru tersimpan")
 
 # Fungsi untuk mengecek catatan
 def check_note(conn):
