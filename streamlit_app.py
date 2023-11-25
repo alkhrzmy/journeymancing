@@ -241,16 +241,16 @@ def edit_note(conn):
         # Cari catatan berdasarkan id yang dipilih
         selected_note = [row for row in table_data if row[0] == selected_id][0]
         for columns in selected_note:
-        uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = columns
-        img = Image.open(io.BytesIO(uploaded_file_data))
-        data_to_display = []
-        data_to_display.append({
-            "Image": uploaded_file_data,
-            "Location Details": location_details,
-            "Datetime": datetime,
-            "Fish Type": fish_type,
-            "Bait Used": bait_used,
-            "Fishing Method": fishing_method,
+            uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = columns
+            img = Image.open(io.BytesIO(uploaded_file_data))
+            data_to_display = []
+            data_to_display.append({
+                "Image": uploaded_file_data,
+                "Location Details": location_details,
+                "Datetime": datetime,
+                "Fish Type": fish_type,
+                "Bait Used": bait_used,
+                "Fishing Method": fishing_method,
         })
         st.data_editor(data_to_display, column_config={"Image": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
         # Tampilkan data yang dipilih untuk diedit
