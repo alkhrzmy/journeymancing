@@ -177,14 +177,16 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
         if "coordinates" in cookies:
             cookie_value = cookie_manager.get(cookie=cookie_name)
         return cookie_value
-
+    checkkoor = False
     if st.button("Simpan Koordinat"):
         # Mendapatkan nilai latitude dan longitude dari cookie
         coordinates = get_cookie_value("coordinates")
         clicked_lat = coordinates.get("latitude")
         clicked_lng = coordinates.get("longitude")
-        st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lng}')
+        checkkoor = True
 
+    if checkkoor:
+        st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lng}')
     location_details = st.text_input("Detail Lokasi", value=init_location_details)
     
     # Input tanggal
