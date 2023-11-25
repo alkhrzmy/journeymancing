@@ -17,19 +17,47 @@ import authlib
 import sqlite3 as sql
 
 # Function to get weather info from a suitable weather API using latitude and longitude
-def get_weather_info(latitude, longitude):
-# Implement logic to fetch weather info from a weather API using latitude and longitude
-# Use an appropriate weather API (e.g., OpenWeatherMap, WeatherAPI, etc.)
-# Replace the code here with the API call to get weather information
+def get_hourly_weather_info(latitude, longitude, api_key:"bd5e378503939ddaee76f12ad7a97608", date_time):
+    base_url = "https://api.openweathermap.org/data/2.5/onecall?"
+    # Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
+    params = {
+        "lat": latitude,
+        "lon": longitude,
+        "exclude": "current,minutely,daily",  # Exclude unnecessary data
+        "appid": api_key,
+        "units": "metric"  # Units can be metric, imperial, or standard
+    }
 
-    # Example fake weather data
-        fake_weather = {
-            "temperature": "25°C",
-            "condition": "Sunny",
-            "wind_speed": "5 m/s"
-        }
+    try:
+        if date_time:  # If specific date and time are provided
+            timestamp = int(date_time.timestamp())
+            params["dt"] = timestamp
 
-        return fake_weather
+        response = requests.get(base_url, params=params)
+        data = response.json()
+
+        if response.status_code == 200:
+            hourly_weather = data.get("hourly", [])
+            if hourly_weather:
+                for hour_data in hourly_weather:
+                    # Process hourly weather data here as needed
+                    timestamp = hour_data.get("dt")
+                    weather_info = {
+                        "time": datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'),
+                        "temperature": hour_data.get("temp"),
+                        "condition": hour_data["weather"][0]["main"],
+                        "wind_speed": hour_data.get("wind_speed")
+                    }
+                    print(weather_info)  # Example: Print weather information
+                    return weather_info
+                return hourly_weather
+            else:
+                return None
+        else:
+            return None
+    except requests.RequestException as e:
+        print("Error fetching data:", e)
+        return None
 
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
@@ -188,8 +216,9 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
         checkkoor = True
 
     if checkkoor:
-        st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lng}')
-    location_details = st.text_input("Detail Lokasi", value=init_location_details)
+        st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lat}')
+    location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
+
     
     # Input tanggal
     input_date = st.date_input("Tanggal")
@@ -208,6 +237,14 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
 
     # Memasukkan metode memancing
     fishing_method_ = st.text_input("Metode Memancing", value=init_fishing_method)
+
+    latitude = clicked_lat
+    longitude = clicked_lat
+    specific_date_time = datetime_
+    
+    weather_infor = get_hourly_weather_info(latitude, longitude, api_key, specific_date_time)
+
+    st.write(weather_infor)
     
     if st.button("Simpan Catatan"):
         with conn:
