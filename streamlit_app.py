@@ -7,6 +7,7 @@ import pandas as pd
 from PIL import Image
 import io
 import json
+import extra_streamlit_components as stx
 
 import streamlit_authenticator as stauth
 
@@ -162,31 +163,31 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     # Display the HTML content with the map
     components.html(google_maps_autocomplete, height=600)
 
-    # Define global variables to store the clicked coordinates
     clicked_lat = None
     clicked_lng = None
     
-    # Update the getClickedCoordinates() function to store clicked values
     # Membaca nilai dari cookie
+    @st.cache_resource(experimental_allow_widgets=True)
+    def get_manager():
+        return stx.CookieManager(key="kukis")
+
+    cookie_manager = get_manager()
+
+    cookies = cookie_manager.get_all()
+
     def get_cookie_value(cookie_name):
         cookie_value = None
-        if "coordinates" in st.request.cookies:
-            cookie_value = st.request.cookies["coordinates"]
+        if "coordinates" in cookies:
+            cookie_value = cookie_manager.get(cookie=cookie_name)
         return cookie_value
 
-    # Mendapatkan nilai latitude dan longitude dari cookie
-    coordinates_json = get_cookie_value("coordinates")
-
-    if coordinates_json:
-        coordinates = json.loads(coordinates_json)
+    if st.button("Simpan Koordinat"):
+        # Mendapatkan nilai latitude dan longitude dari cookie
+        coordinates = get_cookie_value("coordinates")
         clicked_lat = coordinates.get("latitude")
         clicked_lng = coordinates.get("longitude")
-
-        # Gunakan nilai latitude dan longitude seperti yang diinginkan
-        st.write(f'Latitude: {clicked_lat}, Longitude: {clicked_lng}')
-    else:
-        st.write("Cookie 'coordinates' tidak ditemukan.")
-        
+        st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lng}')
+    
     # Input tanggal
     input_date = st.date_input("Tanggal")
 
