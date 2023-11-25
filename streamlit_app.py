@@ -41,13 +41,10 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
     
     # Memasukkan foto
     uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
-    uploaded_file_data = uploaded_file.read()
+    #uploaded_file_data = uploaded_file.read()
     
-    if init_uploaded_file_ is None:
-        uploaded_file = init_uploaded_file_
-        
-    # Memasukkan detail lokasi
-    location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
+    #if init_uploaded_file_ is None:
+    #    uploaded_file = init_uploaded_file_
 
     # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
     # HTML template for the location picker
@@ -187,6 +184,8 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
         clicked_lat = coordinates.get("latitude")
         clicked_lng = coordinates.get("longitude")
         st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lng}')
+
+    location_details = st.text_input("Detail Lokasi", value=init_location_details)
     
     # Input tanggal
     input_date = st.date_input("Tanggal")
