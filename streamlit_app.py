@@ -132,24 +132,27 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
             // Simpan koordinat di elemen HTML
             document.getElementById('lat-span').innerHTML = clickedLat;
             document.getElementById('lon-span').innerHTML = clickedLng;
+
+            // Fungsi untuk mendapatkan nilai latitude dan longitude yang dipilih
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + value + expires + "; path=/";
+            }
+
+            // Panggil fungsi ini ketika Anda memiliki nilai latitude dan longitude
+            function setCoordinatesInCookie(lat, lon) {
+                var coordinates = {'latitude': lat, 'longitude': lon};
+                setCookie('coordinates', JSON.stringify(coordinates), 1);
+            }
+            setCoordinatesInCookie(clickedLat,clickedLng);
         });
     }
-        // Fungsi untuk mendapatkan nilai latitude dan longitude yang dipilih
-    function setCookie(name, value, days) {
-        var expires = "";
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + value + expires + "; path=/";
-    }
-
-    // Panggil fungsi ini ketika Anda memiliki nilai latitude dan longitude
-    function setCoordinatesInCookie(lat, lon) {
-        var coordinates = {'latitude': clickedLat, 'longitude': clickedLng};
-        setCookie('coordinates', JSON.stringify(coordinates), 1);
-    }
+        
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6JQDWAVYXN07fZAtBK-ATcBg750J68bQ&libraries=places&callback=initMap" async defer></script>
