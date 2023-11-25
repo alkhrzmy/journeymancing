@@ -294,7 +294,7 @@ def button_coiche():
     with button_col2:
         add_note(conn1)
     with button_col3:
-        edit_note()
+        edit_note(conn1)
     with button_col4:
         delete_note()
 
