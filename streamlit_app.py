@@ -68,11 +68,11 @@ def add_note(conn, init_uploaded_file_=random_photo, init_location_details="", i
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
-    uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
-    if uploaded_file is None:
-        uploaded_file = init_uploaded_file_
-    if uploaded_file is not None:
-        uploaded_file_data = uploaded_file.read()
+    #uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
+    #if uploaded_file is None:
+    #    uploaded_file = init_uploaded_file_
+    #if uploaded_file is not None:
+    #    uploaded_file_data = uploaded_file.read()
     
     # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
     # HTML template for the location picker
