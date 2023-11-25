@@ -213,7 +213,7 @@ def check_note(conn1):
     if table_data:
         data_to_display = []
         for row in table_data:
-            uploaded_file_data, location_details, datetime_val, fish_type, bait_used, fishing_method = row
+            uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = row
             img = Image.open(io.BytesIO(uploaded_file_data))
             data_to_display.append({
                 "Location Details": location_details,
@@ -221,7 +221,7 @@ def check_note(conn1):
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
-                "Image": img
+                "Image": img,
             })
         st.table(data_to_display)
     else:
