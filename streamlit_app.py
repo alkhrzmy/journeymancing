@@ -212,10 +212,11 @@ def check_note(conn1):
     table_data = conn1.execute("select uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method from catatan").fetchall()
     if table_data:
         data_to_display = []
+        table_data2 = list(zip(*table_data))
         for row in table_data:
             uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = row
             img = Image.open(io.BytesIO(uploaded_file_data))
-            data_to_display.append({
+            data_to_display({
                 "Location Details": location_details,
                 "Datetime": datetime,
                 "Fish Type": fish_type,
