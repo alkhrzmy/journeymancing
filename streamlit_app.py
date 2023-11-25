@@ -208,21 +208,22 @@ def add_note(conn, init_uploaded_file_="", init_location_details="", init_combin
 
 # Fungsi untuk mengecek catatan
 def check_note(conn):
-    table_data = conn.execute("SELECT uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    table_data = conn.execute("SELECT uploaded_file, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
     
     if table_data:
         data_to_display = []
         for row in table_data:
             uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = row
+            img = Image.open(io.BytesIO(uploaded_file_data))
             data_to_display.append({
-                "img": uploaded_file_data,
+                "Image": uploaded_file_data,
                 "Location Details": location_details,
                 "Datetime": datetime,
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
             })
-        st.data_editor(data_to_display, column_config={"img": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
+        st.data_editor(data_to_display, column_config={"Image": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
     else:
         st.write("No entries in the authentication database")
     
@@ -278,7 +279,7 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 conn1 = sql.connect("file:auth.db?mode=rwc", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
-conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, uploaded_file_data BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, uploaded_file BLOB, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
 
 names = []
 usernames = []
