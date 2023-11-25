@@ -222,7 +222,7 @@ def check_note(conn):
                 "Fishing Method": fishing_method,
                 "img": uploaded_file_data,
             })
-        st.data_editor(data_to_display, column_config={"Img": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
+        st.data_editor(data_to_display, column_config={"img": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
     else:
         st.write("No entries in the authentication database")
     
