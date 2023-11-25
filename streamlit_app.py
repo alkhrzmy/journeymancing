@@ -217,7 +217,7 @@ def check_note(conn1):
             img = Image.open(io.BytesIO(uploaded_file_data))
             data_to_display.append({
                 "Location Details": location_details,
-                "Datetime": datetime_val,
+                "Datetime": datetime,
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
