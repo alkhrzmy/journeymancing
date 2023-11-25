@@ -213,14 +213,14 @@ def check_note(conn):
     if table_data:
         data_to_display = []
         for row in table_data:
-            uploaded_file_data, location_details, datetime_val, fish_type, bait_used, fishing_method = row
+            uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = row
             data_to_display.append({
+                "img": uploaded_file_data,
                 "Location Details": location_details,
-                "Datetime": datetime_val,
+                "Datetime": datetime,
                 "Fish Type": fish_type,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
-                "img": uploaded_file_data,
             })
         st.data_editor(data_to_display, column_config={"img": st.column_config.ImageColumn("Foto", help="Streamlit app preview screenshots")})
     else:
