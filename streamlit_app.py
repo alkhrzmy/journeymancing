@@ -242,7 +242,7 @@ def edit_note(conn):
         selected_note = [row for row in table_data if row[0] == selected_id][0]
         
         # Tampilkan data yang dipilih untuk diedit
-        uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = selected_note
+        location_details, datetime, fish_type, bait_used, fishing_method = selected_note
         
         st.image(uploaded_file_data, caption='Foto')
         edited_location = st.text_input("Ubah Detail Lokasi", value=location_details)
