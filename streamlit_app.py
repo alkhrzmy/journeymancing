@@ -17,14 +17,14 @@ import authlib
 import sqlite3 as sql
 
 # Function to get weather info from a suitable weather API using latitude and longitude
-def get_hourly_weather_info(latitude, longitude, api_key:"bd5e378503939ddaee76f12ad7a97608", date_time):
+def get_hourly_weather_info(latitude, longitude, date_time):
     base_url = "https://api.openweathermap.org/data/2.5/onecall?"
     # Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
     params = {
         "lat": latitude,
         "lon": longitude,
         "exclude": "current,minutely,daily",  # Exclude unnecessary data
-        "appid": api_key,
+        "appid": "bd5e378503939ddaee76f12ad7a97608",
         "units": "metric"  # Units can be metric, imperial, or standard
     }
 
@@ -243,7 +243,7 @@ def add_note(conn, init_location_details="", init_combined_datetime="", init_fis
     longitude = clicked_lat
     specific_date_time = datetime_
     
-    weather_infor = get_hourly_weather_info(latitude, longitude, api_key, specific_date_time)
+    weather_infor = get_hourly_weather_info(latitude, longitude, specific_date_time)
 
     st.write(weather_infor)
     
