@@ -233,8 +233,34 @@ def edit_note(conn):
     st.write("Hhe")
 
 # Fungsi untuk menghapus catatan
-def delete_note():
-    st.write("Journal")
+def delete_note(conn):
+    table_data = conn.execute("SELECT id, uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+    
+    if table_data:
+        selected_id = st.selectbox("Pilih Catatan yang Ingin Dihapus", [f"ID: {row[0]}" for row in table_data])
+        
+        # Ambil id yang dipilih
+        selected_id = int(selected_id.split(":")[1].strip())
+        
+        # Cari catatan berdasarkan id yang dipilih
+        selected_note = [row for row in table_data if row[0] == selected_id][0]
+        
+        # Tampilkan data yang akan dihapus
+        uploaded_file_data, location_details, datetime, fish_type, bait_used, fishing_method = selected_note
+        
+        st.image(uploaded_file_data, caption='Foto')
+        st.write(f"Detail Lokasi: {location_details}")
+        st.write(f"Tanggal dan Waktu: {datetime}")
+        st.write(f"Jenis Ikan: {fish_type}")
+        st.write(f"Jenis Umpan: {bait_used}")
+        st.write(f"Metode Memancing: {fishing_method}")
+        
+        if st.button("Hapus Catatan"):
+            with conn:
+                conn.execute("DELETE FROM catatan WHERE id=?", (selected_id,))
+            st.success("Catatan telah dihapus")
+    else:
+        st.write("Tidak ada catatan untuk dihapus")
 
 
 # Sidebar navigation function
