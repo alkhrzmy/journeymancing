@@ -292,7 +292,7 @@ def button_coiche():
     with button_col3:
         edit_note(conn1)
     with button_col4:
-        delete_note()
+        delete_note(conn1)
 
 st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
 
