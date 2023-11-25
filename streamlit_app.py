@@ -62,16 +62,17 @@ def get_hourly_weather_info(latitude, longitude, api_key:"bd5e378503939ddaee76f1
 def get_clicked_coordinates():
     return components.html('<script>getClickedCoordinates();</script>', height=0)
 
-    
+random_photo = "https://w7.pngwing.com/pngs/1018/566/png-transparent-smiley-emoticon-sadness-random-icons-miscellaneous-face-black-and-white.png"
 # Fungsi untuk menambahkan catatan memancing
-def add_note(conn, init_uploaded_file_="", init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
+def add_note(conn, init_uploaded_file_=random_photo, init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
     st.title("Tambah Catatan Mancing")
     
     # Memasukkan foto
     uploaded_file = st.file_uploader("Unggah Foto", type=['jpg', 'png'])
     if uploaded_file is None:
         uploaded_file = init_uploaded_file_
-    uploaded_file_data = uploaded_file.read()
+    if uploaded_file is not None:
+        uploaded_file_data = uploaded_file.read()
     
     # Memasukkan lokasi pada map untuk mendapatkan latitude dan longitude
     # HTML template for the location picker
