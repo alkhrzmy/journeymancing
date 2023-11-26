@@ -6,3 +6,4 @@ pandas
 
 extra-streamlit-components
 matplotlib
+plotly
