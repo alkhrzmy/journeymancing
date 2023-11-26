@@ -226,14 +226,17 @@ def add_note(username, conn, init_location_details="", init_combined_datetime=""
     
     weather_infor = get_hourly_weather_info(st.session_state.clicked_lat, st.session_state.clicked_lng, epoch_time)
     
-    if st.session_state.input_time and st.session_state.input_date and st.session_state.clicked_lat:
-        weather_infor = get_hourly_weather_info(st.session_state.clicked_lat, st.session_state.clicked_lng, epoch_time)
+    try:
+        if st.session_state.input_time and st.session_state.input_date and st.session_state.clicked_lat:
+            weather_infor = get_hourly_weather_info(st.session_state.clicked_lat, st.session_state.clicked_lng, epoch_time)
 
-        weather_text = f"Pada {weather_infor['time']}, suhu udara adalah {weather_infor['temperature'] - 273.15:.2f}°C, " \
-                f"dengan kondisi {weather_infor['condition'].lower()}, " \
-                f"dan kecepatan angin sebesar {weather_infor['wind_speed']} m/s."
+            weather_text = f"Pada {weather_infor['time']}, suhu udara adalah {weather_infor['temperature'] - 273.15:.2f}°C, " \
+                    f"dengan kondisi {weather_infor['condition'].lower()}, " \
+                    f"dan kecepatan angin sebesar {weather_infor['wind_speed']} m/s."
 
-        st.text(weather_text)
+            st.text(weather_text)
+    except TypeError:
+        pass
 
     if st.button("Simpan Catatan"):
         with conn:
@@ -260,6 +263,7 @@ def check_note(username, conn):
                 "Fishing Method": fishing_method,
             })
         st.dataframe(data_to_display)  # Use st.dataframe instead of st.data_editor
+        
     else:
         st.write("Belum ada catatan")
     
