@@ -215,10 +215,10 @@ def add_note(username, conn, init_location_details="", init_combined_datetime=""
     jumlah_ = st.number_input("Masukan jumlah ikan", step=1)
     
     # Memasukkan umpan memancing
-    bait_used_ = st.multiselect('Jenis Umpan', ['Umpan alami -  Udang','cacing','cacing laut','cumi','pelet','lumut','kodok','potongan ikan','ulat','Umpan buatan - minnow','popper','metal jig','konahead','spoon','crankbait','stckbait','spinner','jig head','soft plastic lure','sabiki (kotrekan)'])
+    bait_used_ = st.selectbox('Jenis Umpan', ['Umpan alami -  Udang','cacing','cacing laut','cumi','pelet','lumut','kodok','potongan ikan','ulat','Umpan buatan - minnow','popper','metal jig','konahead','spoon','crankbait','stckbait','spinner','jig head','soft plastic lure','sabiki (kotrekan)'])
 
     # Memasukkan metode memancing
-    fishing_method_ = st.multiselect('Metode Memancing', ["Bottom Fishing (Mancing Dasaran)", "Fly Lining (Ngoncer)", "Negek Normal", "Negek Ngoyor", "Trolling", "Casting - Poping", "Casting - Surf Fishing", "Casting - Rock Fishing", "Jigging"])
+    fishing_method_ = st.selectbox('Metode Memancing', ["Bottom Fishing (Mancing Dasaran)", "Fly Lining (Ngoncer)", "Negek Normal", "Negek Ngoyor", "Trolling", "Casting - Poping", "Casting - Surf Fishing", "Casting - Rock Fishing", "Jigging"])
 
     datetime_ = str(datetime.datetime.combine(input_date, input_time))
     datetime_object = datetime.datetime.strptime(datetime_, "%Y-%m-%d %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
