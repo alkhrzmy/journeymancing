@@ -168,8 +168,9 @@ def add_note(username, conn, init_location_details="", init_combined_datetime=""
     # Display the HTML content with the map
     components.html(google_maps_autocomplete, height=500)
 
-    clicked_lat = None
-    clicked_lng = None
+    if 'clicked_lat' not in st.session_state:
+        st.session_state.clicked_lat = None
+        st.session_state.clicked_lng = None
     
     # Membaca nilai dari cookie
     @st.cache_resource(experimental_allow_widgets=True)
@@ -191,23 +192,20 @@ def add_note(username, conn, init_location_details="", init_combined_datetime=""
         # Mendapatkan nilai latitude dan longitude dari cookie
         
         coordinates = get_cookie_value("coordinates")
-        clicked_lat = coordinates.get("latitude")
-        clicked_lng = coordinates.get("longitude")
+        st.session_state.clicked_lat = coordinates.get("latitude")
+        st.session_state.clicked_lng = coordinates.get("longitude")
         checkkoor = True
 
     if checkkoor:
-        st.write(f'Saved! Latitude: {clicked_lat}, Longitude: {clicked_lng}')
+        st.write(f'Saved! Latitude: {st.session_state.clicked_lat}, Longitude: {st.session_state.clicked_lng}')
     location_details_ = st.text_input("Detail Lokasi", value=init_location_details)
 
     
     # Input tanggal
-    input_date = st.date_input("Tanggal")
+    st.session_state.input_date = st.date_input("Tanggal")
 
     # Input waktu
-    input_time = st.time_input("Waktu")
-
-    # Menggabungkan tanggal dan waktu menjadi objek datetime
-    datetime_ = datetime.datetime.combine(input_date, input_time)
+    st.session_state.input_time = st.time_input("Waktu")
 
     # Memasukkan jenis ikan yang ditangkap
     fish_type_ = st.text_input("Jenis Ikan yang Ditangkap", value=init_fish_type)
@@ -220,16 +218,16 @@ def add_note(username, conn, init_location_details="", init_combined_datetime=""
     # Memasukkan metode memancing
     fishing_method_ = st.selectbox('Metode Memancing', ["Bottom Fishing (Mancing Dasaran)", "Fly Lining (Ngoncer)", "Negek Normal", "Negek Ngoyor", "Trolling", "Casting - Poping", "Casting - Surf Fishing", "Casting - Rock Fishing", "Jigging"])
 
-    datetime_ = str(datetime.datetime.combine(input_date, input_time))
+    datetime_ = str(datetime.datetime.combine(st.session_state.input_date, st.session_state.input_time))
     datetime_object = datetime.datetime.strptime(datetime_, "%Y-%m-%d %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
 
     # Convert the datetime object to epoch time (seconds since the epoch)
     epoch_time = int(datetime_object.timestamp())
     
-    weather_infor = get_hourly_weather_info(clicked_lat, clicked_lng, epoch_time)
+    weather_infor = get_hourly_weather_info(st.session_state.clicked_lat, st.session_state.clicked_lng, epoch_time)
     
-    if input_time and input_date and clicked_lat:
-        weather_infor = get_hourly_weather_info(clicked_lat, clicked_lng, epoch_time)
+    if st.session_state.input_time and st.session_state.input_date and st.session_state.clicked_lat:
+        weather_infor = get_hourly_weather_info(st.session_state.clicked_lat, st.session_state.clicked_lng, epoch_time)
 
         weather_text = f"Pada {weather_infor['time']}, suhu udara adalah {weather_infor['temperature'] - 273.15:.2f}°C, " \
                 f"dengan kondisi {weather_infor['condition'].lower()}, " \
