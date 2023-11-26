@@ -236,7 +236,7 @@ def add_note(username, conn, init_location_details="", init_combined_datetime=""
 
             st.text(weather_text)
     except TypeError:
-        pass
+        st.warning("Latitude dan Longitude belum tersimpan, klik Simpan Koordinat kemudian pilih tanggal dan jam kembali")
 
     if st.button("Simpan Catatan"):
         with conn:
@@ -312,7 +312,7 @@ def edit_note(username, conn):
                 new_fishing_method = data_to_display[0]["Fishing Method"]
             
             if st.button("Simpan Perubahan"):
-                conn.execute("UPDATE catatan SET location_details=?, datetime=?, fish_type=?, fish_get=? bait_used=?, fishing_method=? WHERE id=?",
+                conn.execute("UPDATE catatan SET location_details=?, datetime=?, fish_type=?, fish_get=?, bait_used=?, fishing_method=? WHERE id=?",
                              (new_location, new_datetime, new_fish_type, new_total, new_bait_used, new_fishing_method, selected_id))
                 st.success(f"Catatan dengan ID {selected_id_row} telah diperbarui.")
 
@@ -401,6 +401,8 @@ else:
 authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
 
 name, authentication_status, username = authenticator.login("Login", "main")
+st.session_state.username = username
+st.session_state.name = name
 
 if authentication_status == False:
     st.error("Username/password salah")
