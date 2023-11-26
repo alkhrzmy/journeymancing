@@ -1,8 +1,8 @@
 
-mysql-connector-python
+
 folium
 streamlit-authenticator
 pandas
-sqlite3
+
 extra-streamlit-components
 matplotlib
