@@ -51,7 +51,7 @@ def get_hourly_weather_info(latitude, longitude, date_time):
         return None
 
 # Fungsi untuk menambahkan catatan memancing
-def add_note(conn, init_location_details="", init_combined_datetime="", init_fish_type="", init_bait_used="", init_fishing_method=""):
+def add_note(username, conn, init_location_details="", init_combined_datetime="", init_fish_type="", init_jumlah_=None, init_bait_used="", init_fishing_method=""):
     st.title("Tambah Catatan Mancing")
     
     google_maps_autocomplete = """
@@ -212,6 +212,7 @@ def add_note(conn, init_location_details="", init_combined_datetime="", init_fis
     # Memasukkan jenis ikan yang ditangkap
     fish_type_ = st.text_input("Jenis Ikan yang Ditangkap", value=init_fish_type)
 
+    jumlah_ = st.number_input("Masukan jumlah ikan", step=1)
     # Memasukkan metode memancing
     bait_used_ = st.text_input("Jenis Umpan", value=init_bait_used)
 
@@ -238,35 +239,37 @@ def add_note(conn, init_location_details="", init_combined_datetime="", init_fis
     if st.button("Simpan Catatan"):
         with conn:
             conn.execute(
-                "INSERT INTO catatan(location_details, datetime, fish_type, bait_used, fishing_method) VALUES(?,?,?,?,?)",
-                (location_details_, datetime_, fish_type_, bait_used_, fishing_method_),
+                f"INSERT INTO catatan(location_details, datetime, fish_type, fish_get, bait_used, fishing_method, username_catatan) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (location_details_, datetime_, fish_type_, jumlah_, bait_used_, fishing_method_, username)
             )
             st.success("Catatan baru tersimpan")
 
 # Fungsi untuk mengecek catatan
-def check_note(conn):
-    table_data = conn.execute("SELECT location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+def check_note(username, conn):
+    table_data = conn.execute(
+        "SELECT location_details, datetime, fish_type, fish_get, bait_used, fishing_method FROM catatan WHERE username_catatan = ?",(username,)).fetchall()   
     if table_data:
         data_to_display = []
         for row in table_data:
-            location_details, datetime, fish_type, bait_used, fishing_method = row
+            location_details, datetime, fish_type, jumlah_, bait_used, fishing_method = row
             data_to_display.append({
                 "Location Details": location_details,
                 "Datetime": datetime,
                 "Fish Type": fish_type,
+                "Total get": jumlah_,
                 "Bait Used": bait_used,
                 "Fishing Method": fishing_method,
             })
-            st.data_editor(data_to_display)
+        st.dataframe(data_to_display)  # Use st.dataframe instead of st.data_editor
     else:
-        st.write("No entries in the authentication database")
+        st.write("Belum ada catatan")
     
 # Fungsi untuk mengedit catatan
-def edit_note(conn):
-    table_data = conn.execute("SELECT id, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
-    
+def edit_note(username, conn):
+    table_data = conn.execute(
+        "SELECT id, location_details, datetime, fish_type, fish_get, bait_used, fishing_method FROM catatan WHERE username_catatan = ?",(username,)).fetchall()     
     if table_data:
-        selected_id = st.selectbox("Pilih Catatan yang Ingin diedit", [f"ID: {row[0]}" for row in table_data])
+        selected_id = st.selectbox("Pilih Catatan yang ingin diedit", [f"ID: {row[0]}" for row in table_data])
         
         # Ambil id yang dipilih
         selected_id_row = int(selected_id.split(":")[1].strip())
@@ -278,8 +281,9 @@ def edit_note(conn):
                     "Location Details": row[1],
                     "Datetime": row[2],
                     "Fish Type": row[3],
-                    "Bait Used": row[4],
-                    "Fishing Method": row[5],
+                    "Total get": row[4],
+                    "Bait Used": row[5],
+                    "Fishing Method": row[6],
                 })
                 df = pd.DataFrame(data_to_display)
                 st.table(df)
@@ -294,6 +298,9 @@ def edit_note(conn):
             new_fish_type = st.text_input("Masukkan Jenis Ikan Baru")
             if new_fish_type is None:
                 new_fish_type = data_to_display[0]["Fish Type"]
+            new_total = st.text_input("Masukkan Total baru")
+            if new_total is None:
+                new_total = data_to_display[0]["Total get"]           
             new_bait_used = st.text_input("Masukkan Umpan Baru")
             if new_bait_used is None:
                 new_bait_used = data_to_display[0]["Bait Used"]
@@ -302,16 +309,16 @@ def edit_note(conn):
                 new_fishing_method = data_to_display[0]["Fishing Method"]
             
             if st.button("Simpan Perubahan"):
-                conn.execute("UPDATE catatan SET location_details=?, datetime=?, fish_type=?, bait_used=?, fishing_method=? WHERE id=?",
-                             (new_location, new_datetime, new_fish_type, new_bait_used, new_fishing_method, selected_id))
+                conn.execute("UPDATE catatan SET location_details=?, datetime=?, fish_type=?, fish_get=? bait_used=?, fishing_method=? WHERE id=?",
+                             (new_location, new_datetime, new_fish_type, new_total, new_bait_used, new_fishing_method, selected_id))
                 st.success(f"Catatan dengan ID {selected_id_row} telah diperbarui.")
 
     else:
         st.write("Tidak ada catatan untuk diedit")
 
 # Fungsi untuk menghapus catatan
-def delete_note(conn):
-    table_data = conn.execute("SELECT id, location_details, datetime, fish_type, bait_used, fishing_method FROM catatan").fetchall()
+def delete_note(username, conn):
+    table_data = conn.execute("SELECT id, location_details, datetime, fish_type, fish_get, bait_used, fishing_method FROM catatan WHERE username_catatan = ?",(username,)).fetchall()    
     
     if table_data:
         selected_id = st.selectbox("Pilih Catatan yang Ingin dihapus", [f"ID: {row[0]}" for row in table_data])
@@ -326,8 +333,9 @@ def delete_note(conn):
                     "Location Details": row[1],
                     "Datetime": row[2],
                     "Fish Type": row[3],
-                    "Bait Used": row[4],
-                    "Fishing Method": row[5],
+                    "Total get": row[4],
+                    "Bait Used": row[5],
+                    "Fishing Method": row[6],
                 })
                 df = pd.DataFrame(data_to_display)
                 st.table(df)
@@ -348,13 +356,13 @@ def button_coiche():
     button_col1, button_col2, button_col3, button_col4 = st.tabs(["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
 
     with button_col1:
-        check_note(conn1)
+        check_note(username, conn1)
     with button_col2:
-        add_note(conn1)
+        add_note(username, conn1)
     with button_col3:
-        edit_note(conn1)
+        edit_note(username, conn1)
     with button_col4:
-        delete_note(conn1)
+        delete_note(username, conn1)
 
 
 st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide")
@@ -368,7 +376,7 @@ st.image("https://fauzihisbullah.files.wordpress.com/2015/01/fishing_1.jpg")
 conn = sql.connect("file:auth.db?mode=ro", uri=True)
 conn1 = sql.connect("file:auth.db?mode=rwc", uri=True)
 cred_data = conn.execute("select username,password,names from users").fetchall()
-conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, location_details TEXT,datetime TIMESTAMP,fish_type VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
+conn1.execute("CREATE TABLE IF NOT EXISTS catatan (id INTEGER PRIMARY KEY AUTOINCREMENT, username_catatan VARCHAR(255), location_details TEXT, datetime TIMESTAMP, fish_type VARCHAR(255), fish_get VARCHAR(255), bait_used VARCHAR(255),fishing_method VARCHAR(255))")
 
 names = []
 usernames = []
