@@ -5,6 +5,7 @@ import pandas as pd
 from PIL import Image
 import json
 import extra_streamlit_components as stx
+from streamlit_option_menu import option_menu
 
 import streamlit_authenticator as stauth
 
@@ -356,15 +357,14 @@ current_page = "Home"  # Inisialisasi status halaman
 
 
 def button_coiche():
-    button_col1, button_col2, button_col3, button_col4 = st.tabs(["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"])
-
-    with button_col1:
+    selected_tab = option_menu(menu_title=None, options=["Lihat Catatan", "Tambah Catatan", "Edit Catatan", "Hapus Catatan"], icons=["journal text", "plus circle", "pencil square", "trash"], key="nav", orientation="horizontal",)
+    if selected_tab == "Lihat Catatan":
         check_note(username, conn1)
-    with button_col2:
+    elif selected_tab == "Tambah Catatan":
         add_note(username, conn1)
-    with button_col3:
+    elif selected_tab == "Edit Catatan":
         edit_note(username, conn1)
-    with button_col4:
+    elif selected_tab == "Hapus Catatan":
         delete_note(username, conn1)
 
 
