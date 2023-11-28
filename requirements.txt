@@ -1,4 +1,4 @@
-
+streamlit_option_menu
 
 folium
 streamlit-authenticator
