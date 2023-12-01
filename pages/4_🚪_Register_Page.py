@@ -41,11 +41,9 @@ def auth(sidebar=True):
 def access_news():
     mode = st.radio("Select", ("Creat News", "Delete News"))
     {
-        "Write News": write_news,
-        "Delete News": delete_news,
-    }[mode](
-        conn
-    ) 
+        "Write News": write_news(),
+        "Delete News": delete_news(),
+    }
 
 def write_news():
 
@@ -63,14 +61,14 @@ def write_news():
                 )
                 st.success("Berita baru tersimpan")
 
-def delete_news(conn):
-    news_list = [x[0] for x in conn.execute("select * from news").fetchall()]
+def delete_news():
+    news_list = [x[0] for x in news_conn.execute("select * from news").fetchall()]
     news_list.insert(0, "")
     news_ = st.selectbox("Select news", options=news_list)
     if news_:
         if st.button(f"Press to remove {news_}"):
-            with conn:
-                conn.execute("delete from news where username = ?", (news_,))
+            with news_conn:
+                news_conn.execute("delete from news where username = ?", (news_,))
                 st.write(f"Berita {news_} deleted")
 
 
