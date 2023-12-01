@@ -139,10 +139,6 @@ def access_db():
         conn
     )  # I'm not sure whether to be proud or horrified about this...
     
-    with sql.connect("file:news.db?mode=rwc", uri=True) as conn:
-        conn.execute(
-            "create table if not exists news (id INTEGER PRIMARY KEY, username UNIQUE ON CONFLICT REPLACE, password, names)"
-        )
 
 def _superuser_mode():
     news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
