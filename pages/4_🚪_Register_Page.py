@@ -66,9 +66,9 @@ def delete_news():
     news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
     news_list = [x[0] for x in news_conn.execute("select * from news").fetchall()]
     news_list.insert(0, "")
-    news_ = st.selectbox("Select news", options=news_list)
+    news_ = st.selectbox("Pilih news", options=news_list)
     if news_:
-        if st.button(f"Press to remove {news_}"):
+        if st.button(f"Hapus {news_}"):
             with news_conn:
                 news_conn.execute("delete from news where title = ?", (news_,))
                 st.write(f"Berita {news_} deleted")
