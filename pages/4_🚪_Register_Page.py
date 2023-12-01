@@ -41,12 +41,12 @@ def auth(sidebar=True):
 def access_news():
     mode = st.radio("Select", ("Write News", "Delete News"))
     {
-        "Write News": write_news(news_conn),
-        "Delete News": delete_news(news_conn),
+        "Write News": write_news(),
+        "Delete News": delete_news(),
     }
 
-def write_news(news_conn):
-
+def write_news():
+    news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
     new_title = st.text_input("Masukan Judul")
     new_content = st.text_area("Masukan isi content")
     new_image_url = st.text_input("Masukan link foto")
@@ -61,7 +61,8 @@ def write_news(news_conn):
                 )
                 st.success("Berita baru tersimpan")
 
-def delete_news(news_conn):
+def delete_news():
+    news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
     news_list = [x[0] for x in news_conn.execute("select * from news").fetchall()]
     news_list.insert(0, "")
     news_ = st.selectbox("Select news", options=news_list)
@@ -141,7 +142,6 @@ def access_db():
     
 
 def _superuser_mode():
-    news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
     st.title("Administator")
     with sql.connect("file:auth.db?mode=rwc", uri=True) as conn:
         conn.execute(
