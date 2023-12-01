@@ -38,6 +38,15 @@ def auth(sidebar=True):
             return None
     return None
 
+def access_news():
+    mode = st.radio("Select", ("Creat News", "Delete News"))
+    {
+        "Write News": write_news,
+        "Delete News": delete_news,
+    }[mode](
+        conn
+    ) 
+
 def write_news():
 
     new_title = st.text_input("Masukan Judul")
@@ -53,6 +62,16 @@ def write_news():
                     (new_title, new_content, new_image_url, new_date_published)
                 )
                 st.success("Berita baru tersimpan")
+
+def delete_news(conn):
+    news_list = [x[0] for x in conn.execute("select title, content, image_url, date_published from news").fetchall()]
+    news_list.insert(0, "")
+    news_ = st.selectbox("Select news", options=news_list)
+    if news_:
+        if st.button(f"Press to remove {news_}"):
+            with conn:
+                conn.execute("delete from news where username = ?", (news_,))
+                st.write(f"Berita {news_} deleted")
 
 
 
@@ -110,6 +129,7 @@ def _delete_users(conn):
                 conn.execute("delete from users where username = ?", (del_user,))
                 st.write(f"User {del_user} deleted")
 
+
 def access_db():
     mode = st.radio("Select mode", ("View", "Create", "Edit", "Delete"))
     {
@@ -132,8 +152,7 @@ def _superuser_mode():
     with database:
         access_db()
     with news:
-        write_news()
-        
+        access_news()
 
 if __name__ == "__main__":
     st.write(
