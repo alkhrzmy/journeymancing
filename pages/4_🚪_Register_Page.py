@@ -41,11 +41,9 @@ def auth(sidebar=True):
 def access_news():
     mode = st.radio("Select", ("Write News", "Delete News"))
     {
-        "Write News": write_news(),
-        "Delete News": delete_news(),
-    }[mode](
-        news_conn
-    )
+        "Write News": write_news(news_conn),
+        "Delete News": delete_news(news_conn),
+    }
 
 def write_news(news_conn):
 
@@ -53,6 +51,7 @@ def write_news(news_conn):
     new_content = st.text_area("Masukan isi content")
     new_image_url = st.text_input("Masukan link foto")
     new_date_published = datetime.datetime.now()
+    
 
     if st.button("Buat Berita"):
             with news_conn:
@@ -139,9 +138,14 @@ def access_db():
     }[mode](
         conn
     )  # I'm not sure whether to be proud or horrified about this...
-
+    
+    with sql.connect("file:news.db?mode=rwc", uri=True) as conn:
+        conn.execute(
+            "create table if not exists news (id INTEGER PRIMARY KEY, username UNIQUE ON CONFLICT REPLACE, password, names)"
+        )
 
 def _superuser_mode():
+    news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
     st.title("Administator")
     with sql.connect("file:auth.db?mode=rwc", uri=True) as conn:
         conn.execute(
