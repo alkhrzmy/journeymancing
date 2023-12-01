@@ -372,7 +372,7 @@ st.set_page_config(page_title="Journal Mancing", page_icon="🎣", layout="wide"
 
 st.header("Journal Mancing®")
 
-st.image("https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaDI_7bg3FcjX1hW91bCKUyaFrKVUTXmiYkjyXrqXPOK5T_kkYUDjI4yR-mPeb-lZ3BWjuyzUM5cqrSmmM7FhVRrudjywA=w1920-h970")
+st.image("https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaDNoeXVsyJM3hkZCzFNtF1U4fqnhWuKCbyInbnrygpp15qmOQRE5L9ypbOX3dz_xLctMdcQbZruXlyJkFlf-hB5vDkPSg=w1920-h970")
 
 
 # ----- SQL AUTH
