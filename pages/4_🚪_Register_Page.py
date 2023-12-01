@@ -39,19 +39,20 @@ def auth(sidebar=True):
     return None
 
 def access_news():
-    mode = st.radio("Select", ("Creat News", "Delete News"))
+    mode = st.radio("Select", ("Write News", "Delete News"))
     {
         "Write News": write_news(),
         "Delete News": delete_news(),
-    }
+    }[mode](
+        news_conn
+    )
 
-def write_news():
+def write_news(news_conn):
 
     new_title = st.text_input("Masukan Judul")
     new_content = st.text_area("Masukan isi content")
     new_image_url = st.text_input("Masukan link foto")
     new_date_published = datetime.datetime.now()
-    news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
 
     if st.button("Buat Berita"):
             with news_conn:
@@ -61,7 +62,7 @@ def write_news():
                 )
                 st.success("Berita baru tersimpan")
 
-def delete_news():
+def delete_news(news_conn):
     news_list = [x[0] for x in news_conn.execute("select * from news").fetchall()]
     news_list.insert(0, "")
     news_ = st.selectbox("Select news", options=news_list)
