@@ -40,10 +40,11 @@ def auth(sidebar=True):
 
 def access_news():
     mode = st.radio("Select", ("Write News", "Delete News"))
-    {
-        "Write News": write_news(),
-        "Delete News": delete_news(),
-    }
+    
+    if mode == "Write News":
+        write_news()
+    elif mode == "Delete News":
+        delete_news()
 
 def write_news():
     news_conn = sql.connect("file:news.db?mode=rwc", uri=True)
