@@ -70,7 +70,7 @@ def delete_news():
     if news_:
         if st.button(f"Press to remove {news_}"):
             with news_conn:
-                news_conn.execute("delete from news where username = ?", (news_,))
+                news_conn.execute("delete from news where title = ?", (news_,))
                 st.write(f"Berita {news_} deleted")
 
 
