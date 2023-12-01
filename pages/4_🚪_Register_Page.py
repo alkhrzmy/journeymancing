@@ -64,7 +64,7 @@ def write_news():
                 st.success("Berita baru tersimpan")
 
 def delete_news(conn):
-    news_list = [x[0] for x in conn.execute("select title, content, image_url, date_published from news").fetchall()]
+    news_list = [x[0] for x in conn.execute("select * from news").fetchall()]
     news_list.insert(0, "")
     news_ = st.selectbox("Select news", options=news_list)
     if news_:
