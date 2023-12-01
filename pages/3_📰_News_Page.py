@@ -17,7 +17,7 @@ def display_news():
     st.title("Informasi dan Berita")
 
     news_conn = sql.connect("file:news.db?mode=ro", uri=True)
-    news = news_conn.execute("select title, content, image_url, date_published from news").fetchall()
+    news = news_conn.execute("select title, content, image_url, date_published from news ORDER BY date_published DESC").fetchall()
 
     if news:
         for row in news:
