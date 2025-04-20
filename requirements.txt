@@ -1,0 +1,9 @@
+streamlit_option_menu
+
+folium
+streamlit-authenticator
+pandas
+
+extra-streamlit-components
+matplotlib
+plotly
