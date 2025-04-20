@@ -61,7 +61,7 @@ else:
 
 authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
 
-name, authentication_status, username = authenticator.login("Login", "main")
+authenticator.login("Login", "main", location="main")  # title, key, location
 
 if authentication_status:
     def main_page():
