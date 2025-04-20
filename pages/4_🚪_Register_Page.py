@@ -216,7 +216,10 @@ if __name__ == "__main__":
             else:
                 st.warning("Anda tidak login dengan akun admin")
                 st.warning("Logout terlebih dahulu")
-                authenticator.logout("Logout")
+                if 'authentication_status' in st.session_state and st.session_state.authentication_status:
+                    authenticator.logout("Logout")
+                else:
+                    st.warning("You must be logged in to log out.")
 
                 
     else:
