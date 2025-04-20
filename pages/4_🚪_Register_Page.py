@@ -174,7 +174,7 @@ if __name__ == "__main__":
             passwords = cred_data2[1]
             names = cred_data2[2]
             hasher = stauth.Hasher()
-            hashed_passwords = hasher.hash(passwords)
+            hashed_passwords = hasher.hash(list(passwords))
             for un, pw, name in zip(usernames,hashed_passwords,names):
                 user_dict = {"name":name,"password":pw}
                 credentials["usernames"].update({un:user_dict})
