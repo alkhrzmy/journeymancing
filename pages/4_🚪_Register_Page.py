@@ -185,7 +185,20 @@ if __name__ == "__main__":
 
         authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
 
-        name, authentication_status, username = authenticator.login(key="Login", location="main")
+        auth_result = authenticator.login(key="Login", location="main")
+
+        if auth_result is not None:
+            # If the old API behavior still works
+            name, authentication_status, username = auth_result
+            st.session_state.username = username
+            st.session_state.name = name
+        else:
+            # Fallback if the method returns None
+            authentication_status = None
+            username = None
+            name = None
+            st.session_state.username = None
+            st.session_state.name = None
 
         if authentication_status == False:
             st.error("Username/password salah")
