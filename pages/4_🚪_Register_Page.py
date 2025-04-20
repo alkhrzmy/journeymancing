@@ -210,13 +210,8 @@ if __name__ == "__main__":
             data_to_display = [row[0] for row in table_data]  # Extracting usernames from fetched data
 
             if username in data_to_display:  
-                if authentication_status:
-                    _superuser_mode()
-                    authenticator.logout("Logout", "sidebar")
-            else:
-                st.warning("Anda tidak login dengan akun admin")
-                st.warning("Logout terlebih dahulu")
                 if 'authentication_status' in st.session_state and st.session_state.authentication_status:
+                    _superuser_mode()
                     authenticator.logout("Logout")
                 else:
                     st.warning("You must be logged in to log out.")
