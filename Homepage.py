@@ -403,7 +403,7 @@ else:
 
 authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
 
-name, authentication_status, username = authenticator.login("Login", "main")
+name, authentication_status, username = authenticator.login("Login", "main", location="main")
 st.session_state.username = username
 st.session_state.name = name
 
