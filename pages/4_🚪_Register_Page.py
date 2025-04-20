@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
         authenticator = stauth.Authenticate(credentials, "data_mancing", "abcdef", cookie_expiry_days=1)
 
-        name, authentication_status, username = authenticator.login("Login", "main")
+        name, authentication_status, username = authenticator.login(key="Login", location="main")
 
         if authentication_status == False:
             st.error("Username/password salah")
