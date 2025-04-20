@@ -81,7 +81,8 @@ if authentication_status:
         display_news()
 
     def main():
-        authenticator.logout("Logout","sidebar")
+        if 'authentication_status' in st.session_state and st.session_state.authentication_status:
+            authenticator.logout("Logout", key="logout", location="sidebar")
         st.sidebar.title(f"Welcome {name}")
         main_page()
             

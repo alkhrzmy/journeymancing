@@ -15,29 +15,50 @@ table_method = conn.execute(
 df_method = pd.DataFrame(table_method, columns=[0])
 
 # Membuat visualisasi diagram batang
-st.bar_chart(df_method[0].value_counts())
+if 'df_method' in locals() and not df_method.empty and 0 in df_method.columns:
+    st.bar_chart(df_method[0].value_counts())
+else:
+    st.write("No fishing method data available for visualization")
 
 
 # Visualisasi Metode per Ikan
-st.title("Visualisasi Data Metode per Ikan")
-table_fishpermethod = conn.execute(
-"SELECT fishing_method,fish_get FROM catatan WHERE username_catatan = ?",(st.session_state.username,)).fetchall()
-df_fishpermethod = pd.DataFrame(table_fishpermethod, columns=["Metode", "Jumlah"])
-df_fishpermethod["Jumlah"] = pd.to_numeric(df_fishpermethod["Jumlah"])
+# Similarly for the fish per method visualization:
+if 'df_fishpermethod' in locals() and not df_fishpermethod.empty:
+    # Check for empty values in columns
+    if df_fishpermethod['Metode'].empty or df_fishpermethod['Jumlah'].empty:
+        st.write("Insufficient data for visualization")
+    else:
+        st.title("Visualisasi Data Metode per Ikan")
+        table_fishpermethod = conn.execute(
+        "SELECT fishing_method,fish_get FROM catatan WHERE username_catatan = ?",(st.session_state.username,)).fetchall()
+        df_fishpermethod = pd.DataFrame(table_fishpermethod, columns=["Metode", "Jumlah"])
+        df_fishpermethod["Jumlah"] = pd.to_numeric(df_fishpermethod["Jumlah"])
 
-# Membuat visualisasi diagram batang grup
-st.bar_chart(df_fishpermethod.groupby("Metode")["Jumlah"].sum())
+        # Membuat visualisasi diagram batang grup
+        st.bar_chart(df_fishpermethod.groupby("Metode")["Jumlah"].sum())
 
 
 # Visualisasi Umpan per Ikan
-st.title("Visualisasi Data Umpan per Ikan")
-table_fishpermethod = conn.execute(
-"SELECT bait_used,fish_get FROM catatan WHERE username_catatan = ?",(st.session_state.username,)).fetchall()
-df_fishpermethod = pd.DataFrame(table_fishpermethod, columns=["Umpan", "Jumlah"])
-df_fishpermethod["Jumlah"] = pd.to_numeric(df_fishpermethod["Jumlah"])
+# Similarly for the fish per method visualization:
+if 'df_fishpermethod' in locals() and not df_fishpermethod.empty:
+    # Check for empty values in columns
+    if df_fishpermethod['Metode'].empty or df_fishpermethod['Jumlah'].empty:
+        st.write("Insufficient data for visualization")
+    else:
+        st.title("Visualisasi Data Umpan per Ikan")
+        table_fishpermethod = conn.execute(
+        "SELECT bait_used,fish_get FROM catatan WHERE username_catatan = ?",(st.session_state.username,)).fetchall()
+        df_fishpermethod = pd.DataFrame(table_fishpermethod, columns=["Umpan", "Jumlah"])
+        df_fishpermethod["Jumlah"] = pd.to_numeric(df_fishpermethod["Jumlah"])
 
 # Membuat visualisasi diagram batang grup
-st.bar_chart(df_fishpermethod.groupby("Umpan")["Jumlah"].sum())
+# Similarly for the fish per method visualization:
+if 'df_fishpermethod' in locals() and not df_fishpermethod.empty:
+    # Check for empty values in columns
+    if df_fishpermethod['Metode'].empty or df_fishpermethod['Jumlah'].empty:
+        st.write("Insufficient data for visualization")
+    else:
+        st.bar_chart(df_fishpermethod.groupby("Umpan")["Jumlah"].sum())
 
 
 st.title("Visualisasi Data per Bulan")
